@@ -2,28 +2,13 @@ import Head from 'next/head'
 import Link from 'next/link'
 import db from './api/clientApp'
 import { collection, getDocs } from 'firebase/firestore';
-import { useEffect } from 'react';
-import Turnstone from 'turnstone'
+import Search from '@/components/Search';
+import { useContext, useEffect } from 'react';
+import { AppContext, useAppContext } from '@/context/state';
 
 export default function Home({recipeNames}:any) {
-  useEffect(() => {
-    console.log(recipeNames)
-  }, [recipeNames])
-
-  // turnstone styles object 
-  const turnstoneStyles = {
-    input: 'rounded border p-1' ,
-    // inputFocus: 'w-full h-12 border-x-0 border-t-0 border-b border-blue-300 py-2 pl-10 pr-7 text-xl outline-none sm:rounded sm:border',
-    query: 'text-slate-800 placeholder-slate-400',
-    typeahead: 'text-blue-300 border-white m-auto',
-    cancelButton: `absolute w-10 h-12 inset-y-0 left-0 items-center justify-center z-10 text-blue-400 inline-flex sm:hidden`,
-    clearButton: 'absolute inset-y-0 right-0 w-8 inline-flex items-center justify-center text-slate-400 hover:text-rose-400',
-    listbox: 'w-full bg-white sm:border sm:border-blue-300 sm:rounded text-left sm:mt-2 p-2 sm:drop-shadow-xl',
-    groupHeading: 'cursor-default mt-2 mb-0.5 px-1.5 uppercase text-sm text-rose-300',
-    item: 'cursor-pointer p-1.5 text-lg overflow-ellipsis overflow-hidden text-slate-700',
-    highlightedItem: 'cursor-pointer p-1.5 text-lg overflow-ellipsis overflow-hidden text-slate-700 rounded bg-blue-50'
-  }
-
+  
+  useAppContext().setSharedState(recipeNames)
   return (
     <>
       <Head>
@@ -34,19 +19,14 @@ export default function Home({recipeNames}:any) {
       </Head>
       <main className='flex flex-col p-6 min-h-screen bg-page-bg dark:bg-gray-dark'>
         <div className='center sans w-3/5 m-auto'>
-          <h1 className='py-5 text-4xl text-black'>The Recipes Only</h1>
-          <h3 className='py-3 text-lg'>Search for any recipe and get just the recipe - nothing more</h3>
-          <Turnstone 
-          styles={turnstoneStyles} 
-          listbox={{data:recipeNames, searchType:'contains', maxItems: 5}} 
-          enterKeyHint={'enter'} 
-          matchText={true}
-          placeholder={'Search for a recipe'}
-          typeahead={true}
-          onEnter={(e:any) => console.log(e)}
-          ></Turnstone>
+          <h1 className='py-4 text-4xl text-black'>The Recipes Only</h1>
+          <h3 className='py-1 text-lg'>Search for any recipe and get just the recipe - nothing more</h3>
+          <Search recipeNames={recipeNames}/>
         </div>
-        <Link href='/recipePage'>Apple Crepe</Link>
+        {recipeNames.map((recipeName:string, i:number) => {
+          return <Link key={i} href={`/recipes/${recipeName}`}>{recipeName}</Link>
+        })
+        }
       </main>
     </>
   )
@@ -54,9 +34,6 @@ export default function Home({recipeNames}:any) {
 
 export const getStaticProps = async () => {
   const querySnapshot = await getDocs(collection(db, "recipes"));
-  // querySnapshot.forEach((doc) => {
-  //   console.log(`${doc.id} => ${doc.data().name}`);
-  // })
   // create an array of receipe names
   const recipeNames = querySnapshot.docs.map((doc) => {
     // console.log(doc)
