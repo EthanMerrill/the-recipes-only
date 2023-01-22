@@ -3,12 +3,21 @@ import Link from 'next/link'
 import db from './api/clientApp'
 import { collection, getDocs } from 'firebase/firestore';
 import Search from '@/components/Search';
-import { useContext, useEffect } from 'react';
 import { AppContext, useAppContext } from '@/context/state';
+import getRecipe from './api/getRecipe';
 
 export default function Home({recipeNames}:any) {
   
   useAppContext().setSharedState(recipeNames)
+
+  const handleFetch = async () => {
+    const prompt = encodeURI('recipe for apple fritters')
+    const recipeResponse = await fetch(`/api/getRecipe`)
+    const recipes = await recipeResponse.json();
+    console.log(recipes)
+  }
+  handleFetch()
+
   return (
     <>
       <Head>
@@ -19,8 +28,8 @@ export default function Home({recipeNames}:any) {
       </Head>
       <main className='flex flex-col p-6 min-h-screen bg-page-bg dark:bg-gray-dark'>
         <div className='center sans w-3/5 m-auto'>
-          <h1 className='py-4 text-4xl text-black'>The Recipes Only</h1>
-          <h3 className='py-1 text-lg'>Search for any recipe and get just the recipe - nothing more</h3>
+          <h1 className='py-3 text-4xl text-black'>The Recipes Only</h1>
+          <h3 className='py-1 text-lg pb-6'>Search for any recipe and get just the recipe - nothing more</h3>
           <Search recipeNames={recipeNames}/>
         </div>
         {recipeNames.map((recipeName:string, i:number) => {
