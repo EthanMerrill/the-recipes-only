@@ -10,13 +10,13 @@ export default function RecipePage() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <header>
-                <div className='flex justify-start gap-3 bg-page-bg pt-5'>
+                <div className='flex justify-start gap-3  bg-page-bg dark:bg-gray-dark pt-5'>
                     <h1 className='px-6 py-2 text-xl'>The Recipes Only</h1>
                     <input className='rounded border p-1 my-auto' placeholder='Apple Crepe'></input>
                 </div>
                 
             </header>
-            <main className='flex flex-col p-6 min-h-screen bg-page-bg'>
+            <main className='flex flex-col p-6 min-h-screen  bg-page-bg dark:bg-gray-dark'>
                 <div className='border-t border-gray-50 py-1'></div>
                 <div className=' sans w-2/5 mx-auto'>
                 <h1 className='text-2xl py-4'>Ingredients</h1>
