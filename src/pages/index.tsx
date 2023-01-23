@@ -12,8 +12,11 @@ export default function Home({recipeNames}:any) {
   
   // useAppContext().setSharedState(recipeNames)
   const appContext = useContext(AppContext)
-  appContext.setRecipeNames(recipeNames)
-  appContext.setRecipeName('')
+
+  useEffect(() => {
+    appContext.setRecipeNames(recipeNames)
+    appContext.setRecipeName('')
+  }, [appContext, recipeNames])
 
   return (
     <>

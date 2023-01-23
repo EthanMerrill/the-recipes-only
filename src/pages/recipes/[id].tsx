@@ -3,8 +3,14 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import db from '../api/clientApp'
 import Header from '@/components/Header';
 import { Recipe } from '@/types/Recipe';
+import { useContext } from 'react';
+import { AppContext } from '@/context/state';
 
 export default function RecipePage({name, ingredients, instructions}: Recipe) {
+
+    const appContext = useContext(AppContext)
+    appContext.setRecipeName(name)
+
     return (
         <>
             <Head>

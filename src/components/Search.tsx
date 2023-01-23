@@ -22,6 +22,7 @@ export default function Search(props:RecipeNames) {
     }
 
     const appContext = useContext(AppContext)
+    // appContext.setRecipeName('searchTerm')
     const {recipeName} = appContext
 
     return(
