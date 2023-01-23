@@ -3,12 +3,18 @@ import Link from 'next/link'
 import db from './api/clientApp'
 import { collection, getDocs } from 'firebase/firestore';
 import Search from '@/components/Search';
-import { useAppContext } from '@/context/state';
+import { AppContext, useAppContext } from '@/context/state';
+import { useContext } from 'react';
+import { useEffect } from 'react';
+
 
 export default function Home({recipeNames}:any) {
   
-  useAppContext().setSharedState(recipeNames)
-  
+  // useAppContext().setSharedState(recipeNames)
+  const appContext = useContext(AppContext)
+  appContext.setRecipeNames(recipeNames)
+  appContext.setRecipeName('')
+
   return (
     <>
       <Head>

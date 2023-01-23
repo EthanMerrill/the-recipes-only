@@ -5,7 +5,6 @@ import Header from '@/components/Header';
 import { Recipe } from '@/types/Recipe';
 
 export default function RecipePage({name, ingredients, instructions}: Recipe) {
-    console.log(ingredients)
     return (
         <>
             <Head>
@@ -19,14 +18,17 @@ export default function RecipePage({name, ingredients, instructions}: Recipe) {
                 <div className='border-t border-gray-50 py-1'></div>
                 <div className=' sans w-2/5 mx-auto'>
                     <h1 className='text-2xl py-4'>Ingredients</h1>
-                    {/* Not using a UL will hurt seo, this is MVP */}
-                    <p className='pb-3'>
-                        {ingredients}
-                    </p>
+                    <ul>
+                    {ingredients?.map((ingredient:string, i:number) => {
+                        return <li key={i}>{ingredient}</li>
+                        })}
+                    </ul>
                     <h1 className='text-2xl py-4'>Directions</h1>
-                    <p>
-                        {instructions}
-                    </p>
+                    <ol>
+                    {instructions?.map((ingredient:string, i:number) => {
+                        return <li key={i}>{ingredient}</li>
+                        })}
+                    </ol>
                 </div>
             </main>
         </>
@@ -39,7 +41,6 @@ export async function getStaticProps(context: any) {
         const q = query(recipesRef, where("name", "==", context.params.id));
         const querySnapshot = await getDocs(q);
         const temp = querySnapshot.docs.map(doc => doc.data())
-        console.log(temp[0])
         return { 
             props:  temp[0],
             revalidate: 1000000

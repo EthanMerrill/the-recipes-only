@@ -14,16 +14,17 @@ export const getRecipeApi = async (promptText: string) => {
   }})
 
   const params = {
+    'model': 'text-davinci-003',
     'prompt': promptText,
     'max_tokens': 500,
-    'temperature': 0.7,
+    'temperature': 0.5,
     'top_p': 1,
-    'frequency_penalty': .2,
+    'frequency_penalty': 0,
     'presence_penalty': 0,
   }
 
   const response = await client.post(
-    "https://api.openai.com/v1/engines/davinci/completions", 
+    "https://api.openai.com/v1/completions", 
     params
   );
 
@@ -36,7 +37,6 @@ export const getRecipeApi = async (promptText: string) => {
 export default async (req: NextApiRequest, res: NextApiResponse) => {
    
   const {prompt} = req.body;
-  console.log(prompt)
   const response = await axios.post(
     "https://api.openai.com/v1/engines/davinci/completions",
     {

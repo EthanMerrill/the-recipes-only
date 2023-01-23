@@ -1,53 +1,50 @@
 import Header from "@/components/Header";
 import Head from 'next/head'
 import { Recipe } from "@/types/Recipe";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { doc, setDoc } from "firebase/firestore";
 import db from "../api/clientApp";
-import { capitalizeFirstLetter } from "@/utils/utils";
+import { capitalizeFirstLetter, recipeFormatter } from "@/utils/utils";
 import { getRecipeApi } from "../api/getRecipe";
 import { useRouter } from "next/router";
+import { AppContext } from "@/context/state";
 
 
-export default function NewRecipe (props:any) {
+export default function NewRecipe () {
     const [recipe, setRecipe] = useState({} as Recipe)
     const [searchTerm, setSearchTerm] = useState('')
     const router = useRouter()
+    const appContext = useContext(AppContext)
     
     // get the recipe   
     const handleFetch = async () => {
-        const prompt = encodeURI(`recipe for ${searchTerm} with ingredients and instructions only`)
+        const prompt = encodeURI(`${searchTerm} recipe with ingredients and instructions only`)
         const recipeResponse = await getRecipeApi(prompt)
         return await recipeResponse
     }
 
     useEffect(() => {
         const {searchTerm} = router.query
+        //set the recipe name in state
+        appContext.setRecipeName(searchTerm)
         setSearchTerm(searchTerm as string)
     }, [router.query, searchTerm])
 
     useEffect(() => {
         
         const recipeReturn = handleFetch().then((response) => {
-            let newRecipe = {} as Recipe
-            console.log('response Text', response)
-            newRecipe.ingredients = response.split(/ingredients/i)[0]
-            newRecipe.instructions = response.split(/instructions/i)[0]
-            newRecipe.name = searchTerm
+            let newRecipe = recipeFormatter(searchTerm, response)
             setRecipe(newRecipe)
             return {newRecipe}
         })
         
-        console.log('new Recipe',  recipeReturn)
     }, [ searchTerm])
 
     useEffect(() => {
         if(recipe.name){
-            console.log('recipe', recipe, recipe.name)
             // save recipe to firestore db
             recipe.name = capitalizeFirstLetter(recipe.name)
             setDoc(doc(db, "recipes", recipe.name), recipe)
-            console.log('saving to DB recipe', recipe)
         }
 
     }, [recipe])
@@ -64,14 +61,17 @@ export default function NewRecipe (props:any) {
                 <div className='border-t border-gray-50 py-1'></div>
                 <div className=' sans w-2/5 mx-auto'>
                     <h1 className='text-2xl py-4'>Ingredients</h1>
-                    {/* Not using a UL will hurt seo, this is MVP */}
-                    <p className='pb-3'>
-                        {recipe?.ingredients}
-                    </p>
+                    <ul>
+                    {recipe?.ingredients?.map((ingredient:string, i:number) => {
+                        return <li key={i}>{ingredient}</li>
+                        })}
+                    </ul>
                     <h1 className='text-2xl py-4'>Directions</h1>
-                    <p>
-                        {recipe?.instructions}
-                    </p>
+                    <ol>
+                    {recipe?.instructions?.map((ingredient:string, i:number) => {
+                        return <li key={i}>{ingredient}</li>
+                        })}
+                    </ol>
                 </div>
             </main>
         </>
