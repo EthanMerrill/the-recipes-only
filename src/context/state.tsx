@@ -1,5 +1,5 @@
 // src/context/state.js
-import db from '@/pages/api/clientApp';
+import db from '../pages/api/clientApp';
 import { getDocs, collection } from 'firebase/firestore';
 import { useState, createContext, ReactNode, useContext, useEffect } from 'react';
 

@@ -2,15 +2,10 @@ import Head from 'next/head'
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import db from '../api/clientApp'
 import Header from '@/components/Header';
+import { Recipe } from '@/types/Recipe';
 
-interface RecipePageProps {
-    recipe: {
-        name: string
-        ingredients: string[]
-        instructions: string[]
-    }
-}
-export default function RecipePage({ recipe }: RecipePageProps) {
+export default function RecipePage({name, ingredients, instructions}: Recipe) {
+    console.log(ingredients)
     return (
         <>
             <Head>
@@ -26,11 +21,11 @@ export default function RecipePage({ recipe }: RecipePageProps) {
                     <h1 className='text-2xl py-4'>Ingredients</h1>
                     {/* Not using a UL will hurt seo, this is MVP */}
                     <p className='pb-3'>
-                        {recipe.ingredients}
+                        {ingredients}
                     </p>
                     <h1 className='text-2xl py-4'>Directions</h1>
                     <p>
-                        {recipe.instructions}
+                        {instructions}
                     </p>
                 </div>
             </main>
@@ -44,7 +39,11 @@ export async function getStaticProps(context: any) {
         const q = query(recipesRef, where("name", "==", context.params.id));
         const querySnapshot = await getDocs(q);
         const temp = querySnapshot.docs.map(doc => doc.data())
-        return { props: { recipe: temp[0]} }
+        console.log(temp[0])
+        return { 
+            props:  temp[0],
+            revalidate: 1000000
+        }
     } catch (err) {
         console.log(err)
     }
@@ -53,7 +52,7 @@ export async function getStaticProps(context: any) {
 export async function getStaticPaths() {
     return {
         paths: [
-            { params: { id: "STRING", message: "HELLO!" } }
+            { params: { id: "STRING", message: "HELLO!" } } // seems like I should fix this at some point
         ],
         fallback: true // false or 'blocking'
     };

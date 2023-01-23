@@ -3,7 +3,7 @@ import Search from "./Search"
 
 
 export default function Header(){
-    console.log(useAppContext().sharedState)
+    useAppContext().sharedState = useAppContext().sharedState ?? []
 
     return(
     <div className='flex flex-row justify-start align-center gap-3 flex-wrap bg-page-bg dark:bg-gray-dark pt-5'>

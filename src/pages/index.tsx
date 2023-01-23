@@ -3,21 +3,12 @@ import Link from 'next/link'
 import db from './api/clientApp'
 import { collection, getDocs } from 'firebase/firestore';
 import Search from '@/components/Search';
-import { AppContext, useAppContext } from '@/context/state';
-import getRecipe from './api/getRecipe';
+import { useAppContext } from '@/context/state';
 
 export default function Home({recipeNames}:any) {
   
   useAppContext().setSharedState(recipeNames)
-
-  const handleFetch = async () => {
-    const prompt = encodeURI('recipe for apple fritters')
-    const recipeResponse = await fetch(`/api/getRecipe`)
-    const recipes = await recipeResponse.json();
-    console.log(recipes)
-  }
-  handleFetch()
-
+  
   return (
     <>
       <Head>
@@ -43,8 +34,10 @@ export default function Home({recipeNames}:any) {
 
 export const getStaticProps = async () => {
   const querySnapshot = await getDocs(collection(db, "recipes"));
+  
   // create an array of receipe names
   const recipeNames = querySnapshot.docs.map((doc) => {
+    // useAppContext().setSharedState(recipeNames)
     // console.log(doc)
     return doc.data().name
   })

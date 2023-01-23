@@ -6,12 +6,42 @@ import axios from "axios";
 // write a function that asks openai for a recipe
 // it takes a prompt and returns the completion
 
-export const getRecipeApi = async (prompt: string) => {
+export const getRecipeApi = async (promptText: string) => {
+
+  const client = axios.create({headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
+  }})
+
+  const params = {
+    'prompt': promptText,
+    'max_tokens': 500,
+    'temperature': 0.7,
+    'top_p': 1,
+    'frequency_penalty': .2,
+    'presence_penalty': 0,
+  }
+
+  const response = await client.post(
+    "https://api.openai.com/v1/engines/davinci/completions", 
+    params
+  );
+
+  return response.data.choices[0].text;
+};
+
+// write a handler that receives a request with a prompt
+// and returns a response with the recipe
+
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+   
+  const {prompt} = req.body;
+  console.log(prompt)
   const response = await axios.post(
     "https://api.openai.com/v1/engines/davinci/completions",
     {
     //   model: "text-davinci-003",
-      prompt: 'Recipe for apple fritters',
+      prompt: prompt,
       max_tokens: 500,
       temperature: 0.7,
       top_p: 1,
@@ -27,16 +57,5 @@ export const getRecipeApi = async (prompt: string) => {
     }
   );
 
-  return response.data.choices[0].text;
-};
-
-// write a handler that receives a request with a prompt
-// and returns a response with the recipe
-
-export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const {prompt} = req.body;
-
-  const recipe = await getRecipeApi(prompt);
-
-  res.status(200).json({recipe});
+  res.status(200).json({response});
 };
