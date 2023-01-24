@@ -11,6 +11,9 @@ export default function RecipePage({name, ingredients, instructions}: Recipe) {
     const appContext = useContext(AppContext)
     appContext.setRecipeName(name)
 
+
+
+
     return (
         <>
             <Head>
@@ -47,6 +50,7 @@ export async function getStaticProps(context: any) {
         const q = query(recipesRef, where("name", "==", context.params.id));
         const querySnapshot = await getDocs(q);
         const temp = querySnapshot.docs.map(doc => doc.data())
+        
         return { 
             props:  temp[0],
             revalidate: 1000000
@@ -57,10 +61,13 @@ export async function getStaticProps(context: any) {
 }
 
 export async function getStaticPaths() {
+    // call the API to get all the recipes
+    const recipesRef = collection(db, "recipes");
+    const querySnapshot = await getDocs(recipesRef);
+    const temp = querySnapshot.docs.map(doc => doc.data())
+    console.log('get Static paths', temp[0].name)
     return {
-        paths: [
-            { params: { id: "STRING", message: "HELLO!" } } // seems like I should fix this at some point
-        ],
+        paths: [{params: {id: temp[0].name}}],
         fallback: true // false or 'blocking'
     };
 }

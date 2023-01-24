@@ -31,17 +31,19 @@ export default function NewRecipe () {
     }, [router.query, searchTerm])
 
     useEffect(() => {
-        
-        const recipeReturn = handleFetch().then((response) => {
-            let newRecipe = recipeFormatter(searchTerm, response)
-            setRecipe(newRecipe)
-            return {newRecipe}
-        })
-        
+        if(searchTerm!=""){
+            handleFetch().then((response) => {
+                let newRecipe = recipeFormatter(searchTerm, response)
+                setRecipe(newRecipe)
+                return {newRecipe}
+            })
+        }
     }, [ searchTerm])
 
     useEffect(() => {
         if(recipe.name){
+            // update the state with the properly formatted recipe name
+            appContext.setRecipeName(recipe.name)
             // save recipe to firestore db
             recipe.name = capitalizeFirstLetter(recipe.name)
             setDoc(doc(db, "recipes", recipe.name), recipe)

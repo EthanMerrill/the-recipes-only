@@ -7,7 +7,7 @@ import axios from "axios";
 // it takes a prompt and returns the completion
 
 export const getRecipeApi = async (promptText: string) => {
-
+  console.log(`Making a query to the API with the prompt: ${promptText}`)
   const client = axios.create({headers: {
     "Content-Type": "application/json",
     Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
