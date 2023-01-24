@@ -37,7 +37,7 @@ export function recipeFormatter(recipeName:string, text:string){
     newRecipe.name='test'
 
     // split the ingredients and instructions into an array of lines
-    newRecipe.ingredients = newRecipe.ingredients[1].match(/\-[\w| ]+\n/gmi)
+    newRecipe.ingredients = newRecipe.ingredients[1].match(/\- /gmi)
     newRecipe.instructions = newRecipe.instructions[1].match(/\d+\.+.+/gmi)
     newRecipe.name = capitalizeFirstLetter(recipeName)
     return newRecipe

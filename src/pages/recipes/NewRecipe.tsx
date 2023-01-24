@@ -33,6 +33,7 @@ export default function NewRecipe () {
     useEffect(() => {
         if(searchTerm!=""){
             handleFetch().then((response) => {
+                console.log('api Response: ', response)
                 let newRecipe = recipeFormatter(searchTerm, response)
                 setRecipe(newRecipe)
                 return {newRecipe}
@@ -61,7 +62,7 @@ export default function NewRecipe () {
         <Header/>
         <main className='flex flex-col p-6 min-h-screen  bg-page-bg dark:bg-gray-dark'>
                 <div className='border-t border-gray-50 py-1'></div>
-                <div className=' sans w-2/5 mx-auto'>
+                <div className=' sans sm:w-2/5 w-full mx-auto'>
                     <h1 className='text-2xl py-4'>Ingredients</h1>
                     <ul>
                     {recipe?.ingredients?.map((ingredient:string, i:number) => {

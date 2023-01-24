@@ -25,7 +25,7 @@ export default function RecipePage({name, ingredients, instructions}: Recipe) {
             <Header/>
             <main className='flex flex-col p-6 min-h-screen  bg-page-bg dark:bg-gray-dark'>
                 <div className='border-t border-gray-50 py-1'></div>
-                <div className=' sans w-2/5 mx-auto'>
+                <div className=' sans sm:w-3/5 w-full mx-auto'>
                     <h1 className='text-2xl py-4'>Ingredients</h1>
                     <ul>
                     {ingredients?.map((ingredient:string, i:number) => {
