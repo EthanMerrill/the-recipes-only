@@ -1,13 +1,15 @@
 import Header from "@/components/Header";
 import Head from 'next/head'
 import { Recipe } from "@/types/Recipe";
-import { useContext, useEffect, useState } from "react";
+import { Suspense, useContext, useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { doc, setDoc } from "firebase/firestore";
 import db from "../api/clientApp";
 import { capitalizeFirstLetter, recipeFormatter } from "@/utils/utils";
 import { getRecipeApi } from "../api/getRecipe";
 import { useRouter } from "next/router";
 import { AppContext } from "@/context/state";
+import IngredientsInstructions from "@/components/IngredientsInstructions";
 
 
 export default function NewRecipe () {
@@ -60,23 +62,12 @@ export default function NewRecipe () {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
         <Header/>
+        <Suspense fallback={<div>Loading...</div>}>
         <main className='flex flex-col p-6 min-h-screen  bg-page-bg dark:bg-gray-dark'>
                 <div className='border-t border-gray-50 py-1'></div>
-                <div className=' sans sm:w-2/5 w-full mx-auto'>
-                    <h1 className='text-2xl py-4'>Ingredients</h1>
-                    <ul>
-                    {recipe?.ingredients?.map((ingredient:string, i:number) => {
-                        return <li key={i}>{ingredient}</li>
-                        })}
-                    </ul>
-                    <h1 className='text-2xl py-4'>Directions</h1>
-                    <ol>
-                    {recipe?.instructions?.map((ingredient:string, i:number) => {
-                        return <li key={i}>{ingredient}</li>
-                        })}
-                    </ol>
-                </div>
+                <IngredientsInstructions ingredients={recipe.ingredients} instructions={recipe.instructions} />
             </main>
+        </Suspense>
         </>
     )
 }
