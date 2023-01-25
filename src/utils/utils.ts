@@ -31,14 +31,15 @@ export function capitalizeFirstLetter(text:string) {
   
 // takes a string and returns it in the type of a recipe object
 export function recipeFormatter(recipeName:string, text:string){
+  console.log('recipeName', recipeName, 'text', text)
     let newRecipe = {} as Recipe
-    newRecipe.ingredients = text.split(/ingredients/i)
-    newRecipe.instructions = text.split(/instructions/i)
+    newRecipe.ingredients = text.split(/ingredients/i) ?? []
+    newRecipe.instructions = text.split(/instructions/i) ?? []
     newRecipe.name='test'
 
     // split the ingredients and instructions into an array of lines
-    newRecipe.ingredients = newRecipe.ingredients[1].match(/[\w| |\-|\/]+\n/gmi)
-    newRecipe.instructions = newRecipe.instructions[1].match(/\d+\.+.+/gmi)
+    newRecipe.ingredients = newRecipe.ingredients[1]?.match(/[\w| |\-|\/]+\n/gmi) ?? ['no ingredients given'] 
+    newRecipe.instructions = newRecipe.instructions[1]?.match(/\d+\.+.+/gmi) ?? ['no instructions given']
     newRecipe.name = capitalizeFirstLetter(recipeName)
     return newRecipe
 }
