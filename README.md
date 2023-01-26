@@ -8,8 +8,8 @@ TODO:
 - [ ] Test the ISR to see if the site is really being rebuilt and that new items are being saved to the database
 - [x] Create mobile optimized styling
 - [x] the autocomplete box have a background
-- [ ] Create basic loading animation
-- [ ] Add a tooltip to the listbox
+- [x] Create basic loading animation
+- [x] Add a tooltip to the listbox
 - [ ] Foods only data validation
 - [x] Search on autocomplete item click
 

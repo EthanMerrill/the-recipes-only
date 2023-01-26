@@ -61,6 +61,7 @@ export default function Search(props: RecipeNames) {
             onEnter={(e: string) => {
                 searchFunc(e)
             }}
+            noItemsMessage="Press enter to generate this recipe!"
         >
         </Turnstone>
     )
