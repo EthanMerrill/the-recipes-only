@@ -4,9 +4,9 @@ import db from './api/clientApp'
 import { collection, getDocs } from 'firebase/firestore';
 import Search from '@/components/Search';
 import { AppContext, useAppContext } from '@/context/state';
-import { useContext } from 'react';
+import { Suspense, useContext } from 'react';
 import { useEffect } from 'react';
-
+import Loading from '@/components/Loading'
 
 export default function Home({recipeNames}:any) {
   
@@ -27,6 +27,7 @@ export default function Home({recipeNames}:any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className='flex flex-col p-6 min-h-screen bg-page-bg dark:bg-gray-dark'>
+        <Loading/>
         <div className='center sans w-3/5 m-auto'>
           <h1 className='py-3 text-4xl text-black'>The Recipes Only</h1>
           <h3 className='py-1 text-lg pb-6'>Search for any recipe and get just the recipe - nothing more</h3>

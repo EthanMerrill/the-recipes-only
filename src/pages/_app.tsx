@@ -1,14 +1,15 @@
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
-import  AppContextProvider from '@/context/state'
+import AppContextProvider from '@/context/state'
 import { Suspense } from 'react'
+import QueryClientWrapper from '@/context/QueryProvider'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-  <AppContextProvider>
-    <Suspense fallback={<div>Loading...</div>}>
-    <Component {...pageProps} />
-    </Suspense>
-  </AppContextProvider>
+    <AppContextProvider>
+      <QueryClientWrapper>
+        <Component {...pageProps} />
+      </QueryClientWrapper>
+    </AppContextProvider>
   )
 }

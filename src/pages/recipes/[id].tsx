@@ -12,9 +12,6 @@ export default function RecipePage({name, ingredients, instructions}: Recipe) {
     const appContext = useContext(AppContext)
     appContext.setRecipeName(name)
 
-
-
-
     return (
         <>
             <Head>
@@ -26,7 +23,7 @@ export default function RecipePage({name, ingredients, instructions}: Recipe) {
             <Header/>
             <main className='flex flex-col p-6 min-h-screen  bg-page-bg dark:bg-gray-dark'>
                 <div className='border-t border-gray-50 py-1'></div>
-                <IngredientsInstructions ingredients={ingredients} instructions={instructions} />
+                <IngredientsInstructions ingredients={ingredients} instructions={instructions} loading={false}/>
             </main>
         </>
     )

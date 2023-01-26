@@ -11,41 +11,42 @@ interface RecipeNames {
 }
 
 
-export default function Search(props:RecipeNames) {
-    const {recipeNames, text} = props
+export default function Search(props: RecipeNames) {
+    const { recipeNames, text } = props
     const router = useRouter()
 
-    
+
     // check if search term is in the recipeNames array
-    const isRecipe = (searchTerm:string) => {
+    const isRecipe = (searchTerm: string) => {
+        console.log('isRecipe', searchTerm, recipeNames)
         return recipeNames.includes(searchTerm)
     }
 
     const appContext = useContext(AppContext)
-    // appContext.setRecipeName('searchTerm')
-    const {recipeName} = appContext
+    const { recipeName } = appContext
+    appContext.setRecipeName(recipeName)
 
-    return(
-    <Turnstone 
-          styles={turnstoneStyles} 
-          listbox={{data:recipeNames, searchType:'contains', maxItems: 5}} 
-          enterKeyHint={'enter'} 
-          matchText={true}
-          placeholder={'Search for a recipe'}
-          text={recipeName}
-          typeahead={true}
-          onEnter={(e:string ) => {
-            
-            appContext.setRecipeName(e)
-            if(isRecipe(e)){
-                router.push(`/recipes/${e}`)
-            } else {
-                router.push({
-                    pathname:`/recipes/NewRecipe`,
-                    query: {searchTerm: e}
-                }) 
-            }
-        }}
-          ></Turnstone>
+    return (
+        <Turnstone
+            id={'search'}
+            styles={turnstoneStyles}
+            listbox={{ data: recipeNames, searchType: 'contains', maxItems: 5 }}
+            enterKeyHint={'enter'}
+            matchText={true}
+            placeholder={'Search for a recipe'}
+            text={recipeName}
+            typeahead={true}
+            onEnter={(e: string) => {
+                appContext.setRecipeName(e)
+                if (isRecipe(e)) {
+                    router.push(`/recipes/${e}`)
+                } else {
+                    router.push({
+                        pathname: `/recipes/NewRecipe`,
+                        query: { searchTerm: e }
+                    })
+                }
+            }}
+        ></Turnstone>
     )
 }

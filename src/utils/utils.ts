@@ -1,6 +1,9 @@
 import { Recipe } from "@/types/Recipe";
 
-export function capitalizeFirstLetter(text:string) {
+export function capitalizeFirstLetter(text:string|string[]) {
+    if (Array.isArray(text)) {
+      return text.map(word => word.charAt(0).toUpperCase() + word.slice(1))[0]
+    }
     return text
       .toLowerCase() // lowercase all letters
       .split(' ') // split the string into an array of words
@@ -31,15 +34,9 @@ export function capitalizeFirstLetter(text:string) {
   
 // takes a string and returns it in the type of a recipe object
 export function recipeFormatter(recipeName:string, text:string){
-  console.log('recipeName', recipeName, 'text', text)
     let newRecipe = {} as Recipe
-    newRecipe.ingredients = text.split(/ingredients/i) ?? []
-    newRecipe.instructions = text.split(/instructions/i) ?? []
-    newRecipe.name='test'
-
-    // split the ingredients and instructions into an array of lines
-    newRecipe.ingredients = newRecipe.ingredients[1]?.match(/[\w| |\-|\/]+\n/gmi) ?? ['no ingredients given'] 
-    newRecipe.instructions = newRecipe.instructions[1]?.match(/\d+\.+.+/gmi) ?? ['no instructions given']
-    newRecipe.name = capitalizeFirstLetter(recipeName)
+    newRecipe.ingredients = text.split(/ingredients|instructions/i)[1]?.match(/^[-|\d|\u00BC-\u00BE\u2150-\u215E].+$[\n]/gmi) ?? ['no ingredients given']  ?? []
+    newRecipe.instructions = text.split(/instructions/i)[1]?.match(/\d+\.+.+/gmi) ?? ['no instructions given'] ?? []
+    newRecipe.name = capitalizeFirstLetter(recipeName) ?? 'no name given'
     return newRecipe
 }
