@@ -8,23 +8,24 @@ export default function IngredientsInstructions({ ingredients, instructions, loa
         console.log(loading)
     }, [loading])
 
+
     return (
         <div>
-            <Loading />
             <div className=' sans sm:w-3/5 w-full mx-auto'>
-                <h1 className='text-2xl py-4'>Ingredients</h1>
-                {loading ? <div>Loading...</div> :
+            
+                <h1 className='text-2xl py-4 min-h-[40px]'>Ingredients</h1>
+                {loading ? <div className='h-[200px] rounded-lg bg-slate-300 animate-pulse w-full'><Loading/></div> :
                         <ul>
                             {ingredients?.map((ingredient: string, i: number) => {
-                                return <li key={i}>{ingredient}</li>
+                                return <li key={i} className='py-1 text-gray-dark'>{ingredient}</li>
                             })}
                         </ul>
                 }
-                <h1 className='text-2xl py-4'>Directions</h1>
-                {loading ? <div>Loading...</div> :
+                <h1 className='text-2xl py-4 pt-6 min-h-[40px]'>Directions</h1>
+                {loading ? <div className='h-[200px] rounded-lg bg-slate-300 animate-pulse w-full'><Loading/></div> :
                     <ol>
                         {instructions?.map((ingredient: string, i: number) => {
-                            return <li key={i}>{ingredient}</li>
+                            return <li key={i} className='py-1 text-gray-dark'>{ingredient}</li>
                         })}
                     </ol>
                 }

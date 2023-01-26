@@ -1,6 +1,7 @@
 import Search from "./Search"
 import { AppContext } from '@/context/state';
 import { useContext } from 'react';
+import Loading from "./Loading";
 
 
 export default function Header(){
@@ -11,8 +12,9 @@ export default function Header(){
     <div className='flex flex-row justify-center align-center gap-3 flex-wrap bg-page-bg dark:bg-gray-dark pt-5 
     sm:justify-start'>
         <div><a href={'/'}><h1 className='px-6 py-2 text-xl'>The Recipes Only</h1></a></div>
-        <div className="my-auto">
+        <div className="my-auto flex flex-row">
         <Search recipeNames={recipeNames}  text={recipeName}/>
+        <Loading h-5 w-2/>
         </div>
     </div>
     )

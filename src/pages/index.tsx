@@ -27,16 +27,15 @@ export default function Home({recipeNames}:any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className='flex flex-col p-6 min-h-screen bg-page-bg dark:bg-gray-dark'>
-        <Loading/>
+        
         <div className='center sans w-3/5 m-auto'>
           <h1 className='py-3 text-4xl text-black'>The Recipes Only</h1>
           <h3 className='py-1 text-lg pb-6'>Search for any recipe and get just the recipe - nothing more</h3>
+          <div className='flex flex-row'>
           <Search recipeNames={recipeNames}/>
+          <Loading/>
+          </div>
         </div>
-        {recipeNames.map((recipeName:string, i:number) => {
-          return <Link key={i} href={`/recipes/${recipeName}`}>{recipeName}</Link>
-        })
-        }
       </main>
     </>
   )

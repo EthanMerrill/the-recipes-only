@@ -22,6 +22,18 @@ export default function Search(props: RecipeNames) {
         return recipeNames.includes(searchTerm)
     }
 
+    const searchFunc = (e: string) => {
+        appContext.setRecipeName(e)
+        if (isRecipe(e)) {
+            router.push(`/recipes/${e}`)
+        } else {
+            router.push({
+                pathname: `/recipes/NewRecipe`,
+                query: { searchTerm: e }
+            })
+        }
+    }
+
     const appContext = useContext(AppContext)
     const { recipeName } = appContext
     appContext.setRecipeName(recipeName)
@@ -30,23 +42,26 @@ export default function Search(props: RecipeNames) {
         <Turnstone
             id={'search'}
             styles={turnstoneStyles}
-            listbox={{ data: recipeNames, searchType: 'contains', maxItems: 5 }}
+            maxItems= {5}
+            listbox={{ name:"test",data: recipeNames, searchType: 'contains', }}
+            onClick={(e: string) => {
+                searchFunc(e)
+                console.log(e)
+            }}
+            onSelect={(e: string) => {
+                if(e){
+                    searchFunc(e)
+                }
+            }}
             enterKeyHint={'enter'}
             matchText={true}
             placeholder={'Search for a recipe'}
             text={recipeName}
             typeahead={true}
             onEnter={(e: string) => {
-                appContext.setRecipeName(e)
-                if (isRecipe(e)) {
-                    router.push(`/recipes/${e}`)
-                } else {
-                    router.push({
-                        pathname: `/recipes/NewRecipe`,
-                        query: { searchTerm: e }
-                    })
-                }
+                searchFunc(e)
             }}
-        ></Turnstone>
+        >
+        </Turnstone>
     )
 }
