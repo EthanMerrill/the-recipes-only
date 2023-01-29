@@ -28,7 +28,9 @@ module.exports = {
       'gray': '#717170',
       'gray-50': '#E8E8E6',
       'gray-light': '#B0B0B0',
-      'page-bg': '#FFFEFC'
+      'page-bg': '#FFFEFC',
+      'text-light': '#B0B0B0',
+      'text-dark': '#FFFEFC',
     },
     fontFamily: {
       sans: ['var(--lato-font)', 'Inter var', ...defaultTheme.fontFamily.sans],
@@ -39,7 +41,19 @@ module.exports = {
       lineHeight: {
         'extra-loose': '2.5',
       },
+      
+      animation: {
+        fade: 'fadeIn 1s ease-in-out',
+        fadeSlow: 'fadeIn 2s ease-in-out',
+      },
 
+      // that is actual animation
+      keyframes: theme => ({
+        fadeIn: {
+          '0%': { opacity: 0 },
+          '100%': { color: 1 },
+        },
+      }),
     },
     plugins: [],
   }

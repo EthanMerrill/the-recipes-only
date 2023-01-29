@@ -11,15 +11,14 @@ NextJS | Tailwind | Firebase Firestore
 - [ ] Foods only data validation
 - [ ] Allergy Options (include tag in the database)
 - [x] Add Google Analytics
-- [ ] Add Recently Created recipes Carousel/list on the homepage
 - [ ] Add recipe reduction animation to homepage
 - [ ] Basic SEO
-- [ ] Onload animations
+- [x] Onload animations
 - [ ] homepage animation (representing the removal of stories)
 - [ ] Carousel of recently created recipes on the homepage (with a gradient)
 
 #### Styles
-- [ ] ~Update Fonts~ & Spacing
+- [x] ~Update Fonts~ & Spacing
 
 #### Completed Week 1 (01/21-01/28)
 - [x] Create Loading Screen
