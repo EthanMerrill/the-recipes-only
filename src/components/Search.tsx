@@ -57,7 +57,7 @@ export default function Search(props: RecipeNames) {
             matchText={true}
             placeholder={'Search for a recipe'}
             text={recipeName}
-            typeahead={true}
+            // typeahead={true}
             onEnter={(e: string) => {
                 searchFunc(e)
             }}

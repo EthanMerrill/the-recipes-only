@@ -34,9 +34,11 @@ export function capitalizeFirstLetter(text:string|string[]) {
   
 // takes a string and returns it in the type of a recipe object
 export function recipeFormatter(recipeName:string, text:string){
+  
     let newRecipe = {} as Recipe
     newRecipe.ingredients = text.split(/ingredients|instructions/i)[1]?.match(/^[-|\d|\u00BC-\u00BE\u2150-\u215E].+$[\n]/gmi) ?? ['no ingredients given']  ?? []
     newRecipe.instructions = text.split(/instructions/i)[1]?.match(/\d+\.+.+/gmi) ?? ['no instructions given'] ?? []
     newRecipe.name = capitalizeFirstLetter(recipeName) ?? 'no name given'
+    console.log('recipeFormatter called', recipeName, text, newRecipe)
     return newRecipe
 }

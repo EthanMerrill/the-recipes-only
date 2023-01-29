@@ -5,13 +5,17 @@ const colors = require('tailwindcss/colors')
 module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    letterSpacing: {
+      normal: '.15em',
+    },
     screens: {
       sm: '480px',
       md: '768px',
       lg: '976px',
       xl: '1440px',
     },
-    colors: {...colors,
+    colors: {
+      ...colors,
       transparent: 'transparent',
       current: 'currentColor',
       'blue': '#1fb6ff',
@@ -27,10 +31,16 @@ module.exports = {
       'page-bg': '#FFFEFC'
     },
     fontFamily: {
-      sans: ['Inter var', ...defaultTheme.fontFamily.sans],
-      serif: ['Merriweather', 'serif'],
+      sans: ['var(--lato-font)', 'Inter var', ...defaultTheme.fontFamily.sans],
+      serif: ['var(--arvo-font)', 'serif'],
     },
-    extend: {},
-  },
-  plugins: [],
+
+    extend: {
+      lineHeight: {
+        'extra-loose': '2.5',
+      },
+
+    },
+    plugins: [],
+  }
 }

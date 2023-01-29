@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import { AppContext } from "@/context/state";
 import IngredientsInstructions from "@/components/IngredientsInstructions";
 import {useQuery } from "@tanstack/react-query"
-import axios from "axios";
+import { serverTimestamp } from "firebase/firestore"
 
 // const fetcher = (recipe:any) => simpleRecipeApi(recipe).then(({data}) => data);
 
@@ -70,9 +70,11 @@ export default function NewRecipe () {
     // save the recipe to firestore
     useEffect(() => {
         console.log('save the recipe to firestore')
-        if(recipe.name){
+        if(recipe.name && recipe.ingredients && recipe.instructions){
             // save recipe to firestore db
-            setDoc(doc(db, "recipes", recipe.name), recipe)
+            setDoc(doc(db, "recipes", recipe.name), {...recipe, 
+                created: serverTimestamp()
+              })
         }
     }, [appContext, recipe, recipe.name])
 
