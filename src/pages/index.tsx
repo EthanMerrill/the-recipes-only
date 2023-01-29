@@ -7,6 +7,7 @@ import { AppContext, useAppContext } from '@/context/state';
 import { Suspense, useContext } from 'react';
 import { useEffect } from 'react';
 import Loading from '@/components/Loading'
+import Script from 'next/script'
 
 export default function Home({recipeNames}:any) {
   
@@ -35,6 +36,20 @@ export default function Home({recipeNames}:any) {
           <Loading/>
           </div>
         </div>
+                {/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-110EPPVXQX');
+        `}
+      </Script>
       </main>
     </>
   )

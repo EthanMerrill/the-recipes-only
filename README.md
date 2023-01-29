@@ -10,7 +10,7 @@ NextJS | Tailwind | Firebase Firestore
 - [ ] Test the ISR to see if the site is really being rebuilt and that new items are being saved to the database
 - [ ] Foods only data validation
 - [ ] Allergy Options (include tag in the database)
-- [ ] Add Google Analytics
+- [x] Add Google Analytics
 - [ ] Add Recently Created recipes Carousel/list on the homepage
 - [ ] Add recipe reduction animation to homepage
 - [ ] Basic SEO
