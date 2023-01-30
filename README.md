@@ -13,12 +13,18 @@ NextJS | Tailwind | Firebase Firestore
 - [x] Add Google Analytics
 - [ ] Add recipe reduction animation to homepage
 - [ ] Basic SEO
+    - [ ] add recipe titles to each page
 - [x] Onload animations
 - [ ] homepage animation (representing the removal of stories)
 - [ ] Carousel of recently created recipes on the homepage (with a gradient)
-
-#### Styles
+- [ ] add icon and metadata description
+- [ ] show me a photo option
 - [x] ~Update Fonts~ & Spacing
+
+#### Prelaunch
+- [ ] Firebase security settings
+- [ ] Decent error handling (no Recipe found case)
+
 
 #### Completed Week 1 (01/21-01/28)
 - [x] Create Loading Screen

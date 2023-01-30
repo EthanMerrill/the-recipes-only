@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 export default {
-    input: 'rounded border p-1 my-auto h-10 w-[240px] my-auto' ,
+    input: 'rounded border border-neutral-400 p-1 my-auto h-10 w-[240px] my-auto' ,
     // inputFocus: 'w-full h-12 border-x-0 border-t-0 border-b border-blue-300 py-2 pl-10 pr-7 text-xl outline-none sm:rounded sm:border',
     query: 'text-slate-800 dark:text-white placeholder-slate-400',
     typeahead: 'text-gray-light border-white m-auto',

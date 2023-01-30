@@ -38,8 +38,8 @@ export default function Home({recipeNames}:any) {
       <main className='flex flex-col p-6 min-h-screen bg-page-bg dark:bg-gray-dark '>
         
         <div className='center sans w-3/5 m-auto'>
-          <h1 className={`py-3 text-4xl font-serif dark:text-slate-200 text-stone-50 `}>The Recipes Only</h1>
-          <h3 className='py-1 text-lg pb-6 font-sans tracking-wide animate-fade'>Search for any recipe and get just the recipe - nothing more</h3>
+          <h1 className='py-3 text-4xl font-serif dark:text-txt-light text-txt-dark'>The Recipes Only</h1>
+          <h3 className='py-1 text-lg pb-6 font-sans tracking-wide text-neutral-500 animate-fade'>Search for any recipe and get just the recipe - nothing more</h3>
           <div className='flex flex-row flex-wrap'>
           <Search  recipeNames={recipeNames}/>
           <Loading/>

@@ -29,8 +29,8 @@ module.exports = {
       'gray-50': '#E8E8E6',
       'gray-light': '#B0B0B0',
       'page-bg': '#FFFEFC',
-      'text-light': '#B0B0B0',
-      'text-dark': '#FFFEFC',
+      'txt-light': '#B0B0B0',
+      'txt-dark': colors.gray[700],
     },
     fontFamily: {
       sans: ['var(--lato-font)', 'Inter var', ...defaultTheme.fontFamily.sans],
