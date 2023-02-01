@@ -6,6 +6,7 @@ import { Recipe } from '@/types/Recipe';
 import { useContext } from 'react';
 import { AppContext } from '@/context/state';
 import IngredientsInstructions from '@/components/IngredientsInstructions';
+import StarRating from '@/components/StarRating';
 
 export default function RecipePage({name, ingredients, instructions}: Recipe) {
 
@@ -24,6 +25,7 @@ export default function RecipePage({name, ingredients, instructions}: Recipe) {
             <main className='flex flex-col p-6 min-h-screen  bg-page-bg dark:bg-gray-dark'>
                 <div className='border-t border-gray-50 py-1'></div>
                 <h1 className='mx-auto font-serif mt-7 text-xl font-light text-txt-dark'>Recipe for {name}</h1>
+                <StarRating/>
                 <IngredientsInstructions ingredients={ingredients} instructions={instructions} loading={false}/>
             </main>
         </>
