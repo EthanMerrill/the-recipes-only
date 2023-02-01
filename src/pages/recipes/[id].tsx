@@ -23,6 +23,7 @@ export default function RecipePage({name, ingredients, instructions}: Recipe) {
             <Header/>
             <main className='flex flex-col p-6 min-h-screen  bg-page-bg dark:bg-gray-dark'>
                 <div className='border-t border-gray-50 py-1'></div>
+                <h1 className='mx-auto font-serif mt-7 text-xl font-light text-txt-dark'>Recipe for {name}</h1>
                 <IngredientsInstructions ingredients={ingredients} instructions={instructions} loading={false}/>
             </main>
         </>
