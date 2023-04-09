@@ -4,7 +4,7 @@ import AppContextProvider from '@/context/state'
 import QueryClientWrapper from '@/context/QueryProvider'
 import { Arvo, Lato } from '@next/font/google'
 
-const arvo = Arvo({ weight: '700', style: 'normal',subsets: ['latin'] })
+const arvo = Arvo({ weight: ['700', '400'], style: 'normal',subsets: ['latin'] })
 const lato = Lato({ weight: '300', style: 'normal',subsets: ['latin'] })
 
 export default function App({ Component, pageProps }: AppProps) {

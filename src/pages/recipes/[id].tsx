@@ -38,7 +38,7 @@ export async function getStaticProps(context: any) {
         const temp = querySnapshot.docs.map(doc => doc.data())
         // stringify the timestamp
         const recipe = temp.map((recipe: any) => {
-            recipe.created = recipe?.created?.toDate().toString()
+            recipe.created = recipe?.created?.toString()
             return recipe
         })
         console.log('get Static props', recipe[0])
