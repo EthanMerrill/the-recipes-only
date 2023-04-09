@@ -78,8 +78,6 @@ export const getStaticProps = async () => {
   // get all recipe names from firebase and return them in an array of strings
   const querySnapshot = await getDocs(collection(db, "recipes"));
   const recipeNames = querySnapshot.docs.map((doc) => {
-    // useAppContext().setSharedState(recipeNames)
-    // console.log(doc)
     return doc.data().name
   })
   // get a list of the 5 most recent recipes and return them in an array of objects
