@@ -69,3 +69,25 @@ export function structuredRecipeBuilder(recipe:Recipe){
     }`
     return structuredRecipe
 }
+
+export function generateSiteMap(recipes:string[]){
+  return `
+  <?xml version="1.0" encoding="UTF-8"?>
+  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+      <loc>https://therecipesonly.com/</loc>
+      <lastmod>${new Date().toISOString()}</lastmod>
+      <changefreq>daily</changefreq>
+      <priority>1.0</priority>
+    </url>
+    ${recipes.map(recipe => `
+    <url>
+      <loc>https://therecipesonly.com/recipe/${recipe}</loc>
+      <lastmod>${new Date().toISOString()}</lastmod>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
+    </url>
+    `).join('')}
+  </urlset>
+  `
+}
