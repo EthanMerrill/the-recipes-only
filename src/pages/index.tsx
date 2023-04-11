@@ -74,7 +74,7 @@ export default function Home(recipeDetails: HomeProps) {
   )
 }
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   // get all recipe names from firebase and return them in an array of strings
   const querySnapshot = await getDocs(collection(db, "recipes"));
   const recipeNames = querySnapshot.docs.map((doc) => {
