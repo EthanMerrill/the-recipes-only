@@ -52,6 +52,14 @@ export default function Home(recipeDetails: HomeProps) {
             <Search recipeNames={recipeDetails.recipeNames} />
             <Loading />
           </div>
+          <div className='flex flex-row flex-wrap mt-12'>
+            <h1 className='py-3 text-2xl font-serif dark:text-txt-light text-txt-dark'>Or generate a recipe using the ingredients you already have</h1>
+            <div className='flex flex-col'>
+            <input className='w-1/2 p-2 m-2 rounded-lg border border-neutral-300 dark:border-neutral-700 dark:bg-gray-dark dark:text-txt-light' type="text" placeholder='Search with ingredients' />
+            <button className='w-1/2 p-2 m-2 rounded-lg border border-neutral-300 dark:border-neutral-700 dark:bg-gray-dark dark:text-txt-light'>Search</button>
+            </div>
+          </div>
+
           <RecentRecipes topRecipes={recipeDetails.recentRecipes} />
 
         </div>

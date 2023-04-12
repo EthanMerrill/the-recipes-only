@@ -22,6 +22,8 @@ export default function NewRecipe () {
     let searchTerm = router.query.searchTerm
     const appContext = useContext(AppContext)
 
+    // Prompt:
+    // In the future parse the search term to look for an 'ingredient' or 'recipe' and then choose which prompt to use here
     let prompt = encodeURI(`${searchTerm} recipe with ingredients and instructions only`)
     // API QUERY
     const { isLoading, error, data, isFetching, refetch } = useQuery({

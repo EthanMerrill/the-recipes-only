@@ -1,7 +1,6 @@
 import { AppContext } from '@/context/state';
-import { useAppContext } from '@/context/state.tsx'
 import { useRouter } from 'next/router.js'
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import Turnstone from 'turnstone'
 import turnstoneStyles from '../styles/turnstoneStyles.js'
 
