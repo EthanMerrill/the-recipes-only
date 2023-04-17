@@ -58,7 +58,7 @@ export function structuredRecipeBuilder(recipe:Recipe){
       "@context": "https://schema.org/",
       "@type": "Recipe",
       "name": "${recipe.name}",
-      "Keywords": "${JSON.stringify(recipe.name?.split(" "))}",
+      "Keywords": ${JSON.stringify(recipe.name?.split(" "))},
       "image": "https://firebasestorage.googleapis.com/v0/b/the-recipes-only.appspot.com/o/DALL%C2%B7E%202023-04-09%2018.59.16%20-%20recipe%20image%20coming%20soon.png?alt=media&token=e97cc303-fc7b-4a28-b2b0-c5bf9595beea",
       "author": {"@type": "Person",
                 "name": "The Recipes Only"},
