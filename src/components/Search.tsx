@@ -24,10 +24,10 @@ export default function Search(props: RecipeNames) {
     const searchFunc = (e: string) => {
         appContext.setRecipeName(e)
         if (isRecipe(e)) {
-            router.push(`/recipes/${e}`)
+            router.push(`/recipe/${e}`)
         } else {
             router.push({
-                pathname: `/recipes/NewRecipe`,
+                pathname: `/recipe/NewRecipe`,
                 query: { searchTerm: e }
             })
         }
