@@ -13,7 +13,7 @@ export default function RecentRecipes(props:{topRecipes: topRecipe[]}){
         {topRecipes && topRecipes.map((recipe,i) => {
             return (
                 <div key = {i} className="text-right" >
-                    <a href={encodeURI(`recipes/${recipe.name}`)}><h1 className="text-txt-dark dark:txt-light my-2 hover:underline">{recipe.name}</h1></a>
+                    <a href={encodeURI(`recipe/${recipe.name}`)}><h1 className="text-txt-dark dark:txt-light my-2 hover:underline">{recipe.name}</h1></a>
                 </div>
             )
         })
