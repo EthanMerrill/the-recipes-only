@@ -9,7 +9,7 @@ function SiteMap() {
 export async function getServerSideProps({ res }:any) {
     const querySnapshot = await getDocs(collection(db, "recipes"));
     const recipeNames = querySnapshot.docs.map((doc) => {
-      return doc.data().name
+      return encodeURI(doc.data().name)
     })
     const siteMap = generateSiteMap(recipeNames)
     res.setHeader('Content-Type', 'text/xml');

@@ -1,15 +1,12 @@
 import Head from 'next/head'
-import Link from 'next/link'
 import db from './api/clientApp'
 import { collection, getDocs, query, orderBy, limit} from 'firebase/firestore';
 import Search from '@/components/Search';
-import { AppContext, useAppContext } from '@/context/state';
-import { Suspense, useContext, useState } from 'react';
+import { AppContext } from '@/context/state';
+import { useContext, useState } from 'react';
 import { useEffect } from 'react';
 import Loading from '@/components/Loading'
 import Script from 'next/script'
-import { clsx } from "clsx";
-import { Recipe } from '@/types/Recipe';
 import RecentRecipes from '@/components/RecentRecipes';
 import { topRecipe } from '@/types/TopRecipe.interface';
 
@@ -20,7 +17,6 @@ interface HomeProps {
 
 export default function Home(recipeDetails: HomeProps) {
 
-  // useAppContext().setSharedState(recipeNames)
   const appContext = useContext(AppContext)
 
   useEffect(() => {

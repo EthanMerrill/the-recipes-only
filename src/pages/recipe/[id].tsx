@@ -27,6 +27,7 @@ export default function RecipePage(recipe: Recipe) {
             <Header/>
             <main className='flex flex-col p-6 min-h-screen  bg-page-bg dark:bg-gray-dark'>
                 <div className='border-t border-gray-50 py-1'></div>
+                <h1 className="font-serif text-3xl sm:w-3/5 w-full mx-auto pt-5 text-center">{recipe.name}</h1>
                 <IngredientsInstructions ingredients={ingredients} instructions={instructions} loading={false}/>
             </main>
         </>

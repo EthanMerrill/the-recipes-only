@@ -12,7 +12,6 @@ export default function IngredientsInstructions({ ingredients, instructions, loa
     return (
         <div>
             <div className=' sans sm:w-3/5 w-full mx-auto '>
-            
                 <h1 className='text-2xl py-4 min-h-[40px] animate-fade'>Ingredients</h1>
                 {loading ? <div className='h-[200px] rounded-lg bg-slate-300 animate-pulse w-full'><Loading/></div> :
                         <ul className="animate-fade">
