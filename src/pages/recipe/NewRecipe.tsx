@@ -70,11 +70,14 @@ export default function NewRecipe () {
     // save the recipe to firestore
     useEffect(() => {
         console.log('save the recipe to firestore')
-        if(recipe.name && recipe.ingredients && recipe.instructions){
+        if(recipe.name && recipe.ingredients && recipe.instructions && recipe.ingredients.length > 0 && recipe.instructions.length > 0){
             // save recipe to firestore db
             setDoc(doc(db, "recipes", recipe.name), {...recipe, 
                 created: serverTimestamp()
               })
+        }   else {
+            console.log('no recipe to save')
+            alert('sorry there was an error creating your recipe. Please try again later.')
         }
     }, [appContext, recipe, recipe.name])
 
@@ -89,6 +92,7 @@ export default function NewRecipe () {
         <Header/>
             <main className='flex flex-col p-6 min-h-screen  bg-page-bg dark:bg-gray-dark'>
                 <div className='border-t border-gray-50 py-1'></div>
+                <h1 className="font-serif text-3xl sm:w-3/5 w-full mx-auto pt-5 text-center">{searchTerm}</h1>
                 <Suspense fallback={<div>Loading...</div>}>
                 <IngredientsInstructions loading={isLoading || isFetching} ingredients={recipe.ingredients} instructions={recipe.instructions} />
                 </Suspense>

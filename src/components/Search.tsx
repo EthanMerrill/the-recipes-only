@@ -1,5 +1,4 @@
 import { AppContext } from '@/context/state';
-import { useAppContext } from '@/context/state.tsx'
 import { useRouter } from 'next/router.js'
 import { useContext, useEffect, useState } from 'react'
 import Turnstone from 'turnstone'
@@ -25,10 +24,10 @@ export default function Search(props: RecipeNames) {
     const searchFunc = (e: string) => {
         appContext.setRecipeName(e)
         if (isRecipe(e)) {
-            router.push(`/recipes/${e}`)
+            router.push(`/recipe/${e}`)
         } else {
             router.push({
-                pathname: `/recipes/NewRecipe`,
+                pathname: `/recipe/NewRecipe`,
                 query: { searchTerm: e }
             })
         }
