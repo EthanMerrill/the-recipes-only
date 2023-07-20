@@ -1,4 +1,8 @@
 import { Recipe } from "@/types/Recipe";
+import { collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where } from "firebase/firestore";
+import db from "@/pages/api/clientApp"
+import { Rating, Ratings } from "@/types/Ratings.interface";
+
 
 export function capitalizeFirstLetter(text:string|string[]) {
     if (Array.isArray(text)) {
@@ -81,7 +85,7 @@ export function generateSiteMap(recipes:string[]){
     </url>
     ${recipes.map(recipe => `
     <url>
-      <loc>https://therecipesonly.com/recipe/${recipe}</loc>
+      <loc>https://therecipesonly.com/recipe/${encodeURI(recipe)}</loc>
       <lastmod>${new Date().toISOString()}</lastmod>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
@@ -89,4 +93,72 @@ export function generateSiteMap(recipes:string[]){
     `).join('')}
   </urlset>
   `
+}
+
+export async function pushStarRating(recipeName:string, rating:number, userId:string){
+  // do not modify below
+  const recipeRef = doc(db, "recipes", recipeName)
+  // Check to see if this user has already rated this recipe
+  const recipeSnap = (await getDoc(recipeRef)).data();
+  console.log('recipeSnap', recipeSnap['ratings'])
+  const ratingsObj:Ratings = recipeSnap['ratings'] ? recipeSnap.ratings : {
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+    5: []
+  }
+
+  // await updateUserRecipeRating(userId, 2, ratingsObj)
+  const dateString = new Date().toISOString()
+  
+  console.log('ratings object', ratingsObj)
+  setDoc(recipeRef, {
+    ratings: {
+      [rating]: [{created: dateString, userId: userId}, ...ratingsObj[rating] ? ratingsObj[rating] : []]
+    }
+  }, { merge: true });
+}
+
+export async function getStarRating(recipeName:string){
+  const recipeRef = doc(db, "recipes", recipeName)
+  const recipeSnap = await getDoc(recipeRef);
+  if (recipeSnap.exists()) {
+    return (recipeSnap.data().ratings)
+  } else {
+    return {}
+  }
+}
+
+
+
+// need to add a function to get the average rating of a recipe
+
+// need a function to get the returning user's rating of a recipe
+export async function getUserRecipeRating(userId:string, ratingsObject:Ratings){
+  console.log('getUserRecipeRating called', userId, ratingsObject)
+  // create array from 1-5
+  const ratingsArray = [1,2,3,4,5]
+  // loop through the ratings array
+  for (const rating of ratingsArray) {
+    // if the ratings object has a key of the rating
+    if (ratingsObject[rating]) {
+      console.log(`ratingsObject[${rating}] exists`, ratingsObject[rating])
+    }
+  }
+}
+
+// update the user rating of a recipe. Takes the userid and a ratings object
+export async function updateUserRecipeRating(userId:string, newRating:number, ratingsObject:Ratings){
+  // remove the current user rating from the ratingsObject
+  const ratingsArray = [1,2,3,4,5]
+  for (const rating of ratingsArray) {
+    if (ratingsObject[rating]) {
+      console.log(rating, ratingsObject[rating])
+      if (ratingsObject[rating][0].userId === userId) {
+        console.log('found user rating', ratingsObject[rating])
+        delete ratingsObject[rating]
+      }
+    }
+  }
 }

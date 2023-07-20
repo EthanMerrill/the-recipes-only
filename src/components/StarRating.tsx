@@ -1,23 +1,38 @@
 import { Rating } from 'react-simple-star-rating'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { pushStarRating } from '@/utils/utils'
+import { AppContext } from '@/context/state'
 
-export default function StarRating() {
+interface StarRatingProps {
+  averageRating?: number
+}
+
+export default function StarRating(StarRating: StarRatingProps) {
+  
+    const { averageRating } = StarRating
+
     const [rating, setRating] = useState<number|undefined>()
     const [hoverRating, setHoverRating] = useState<number|undefined>()
+
+    // read the recipe name from state
+    const appContext = useContext(AppContext)
+    const { recipeName,userId } = appContext
+    
+    useEffect(() => {
+      if(rating && recipeName && userId){
+        pushStarRating(recipeName, rating, userId)
+      }
+    }, [rating, recipeName, userId])
 
     // Catch Rating value
     const handleRating = (rate: number) => {
       setRating(rate)
-  
-      // other logic
     }
-    // useEffect(() => {
-    //     console.log('rating', rating)
-    // }, [rating])
 
+    
     // Optional callback functions
     // const onPointerEnter = () => setHoverRating()
-    const onPointerLeave = () => rating ? (setHoverRating(undefined), setRating(rating)) : setHoverRating(undefined)
+    const onPointerLeave = () => rating ? (setHoverRating(undefined), setRating(rating), pushStarRating(recipeName, rating, userId)) : setHoverRating(undefined)
     const onPointerMove = (value: number) => setHoverRating(value)
 
     const emojiMap:emojiMap = {
@@ -39,7 +54,6 @@ export default function StarRating() {
           <Rating
           onClick={handleRating}
           size={30}
-          // onPointerEnter={onPointerEnter}
           onPointerLeave={onPointerLeave}
           onPointerMove={onPointerMove}
           allowFraction={false}

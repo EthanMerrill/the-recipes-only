@@ -75,10 +75,11 @@ export default function NewRecipe () {
             setDoc(doc(db, "recipes", recipe.name), {...recipe, 
                 created: serverTimestamp()
               })
-        }   else {
-            console.log('no recipe to save')
-            alert('sorry there was an error creating your recipe. Please try again later.')
-        }
+        }   
+        // else {
+        //     console.log('no recipe to save')
+        //     alert('sorry there was an error creating your recipe. Please try again later.')
+        // }
     }, [appContext, recipe, recipe.name])
 
     return(

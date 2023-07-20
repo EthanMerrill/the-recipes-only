@@ -19,6 +19,7 @@ interface HomeProps {
 export default function Home(recipeDetails: HomeProps) {
 
   const appContext = useContext(AppContext)
+  console.log('state', appContext)
 
   useEffect(() => {
     appContext.setRecipeNames(recipeDetails.recipeNames)
