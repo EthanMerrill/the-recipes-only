@@ -3,30 +3,23 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import db from '../api/clientApp'
 import Header from '@/components/Header';
 import { Recipe } from '@/types/Recipe';
-import { useContext, useEffect } from 'react';
-import { AppContext } from '@/context/state';
 import IngredientsInstructions from '@/components/IngredientsInstructions';
 import StarRating from '@/components/StarRating';
-import { getStarRating, structuredRecipeBuilder } from '@/utils/utils';
-import { useGetUserId } from '@/utils/useGetUserId';
-import { pushStarRating } from '@/utils/utils';
+import { structuredRecipeBuilder } from '@/utils/utils';
+import { use, useContext, useEffect } from 'react';
+import { AppContext } from '@/context/state';
+
 
 export default function RecipePage(recipe: Recipe) {
     const { name, ingredients, instructions } = recipe
-    const appContext = useContext(AppContext)
-    const { setRecipeName } = appContext
 
-    useGetUserId()
+    const appContext = useContext(AppContext)
+    const {setRecipeName} = appContext
 
     useEffect(() => {
-        if (name) {
-            setRecipeName(name)
-            getStarRating(name).then((rating) => {
-                // add rating to context here in the future
-                // appContext.setStarRating(rating)
-            })
-        }
+        setRecipeName(name)
     }, [name, setRecipeName])
+    
 
     return (
         <>
@@ -43,7 +36,7 @@ export default function RecipePage(recipe: Recipe) {
             <main className='flex flex-col p-6 min-h-screen  bg-page-bg dark:bg-gray-dark'>
                 <div className='border-t border-gray-50 py-1'></div>
                 <h1 className="font-serif text-3xl sm:w-3/5 w-full mx-auto pt-5 text-center">{recipe.name}</h1>
-                <StarRating />
+                <StarRating/>
                 <IngredientsInstructions ingredients={ingredients} instructions={instructions} loading={false} />
             </main>
         </>
