@@ -1,4 +1,8 @@
 import { Recipe } from "@/types/Recipe";
+import { addDoc, collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
+import db from "@/pages/api/clientApp"
+import { Ratings } from "@/types/Ratings.interface";
+
 
 export function capitalizeFirstLetter(text:string|string[]) {
     if (Array.isArray(text)) {
@@ -81,7 +85,7 @@ export function generateSiteMap(recipes:string[]){
     </url>
     ${recipes.map(recipe => `
     <url>
-      <loc>https://therecipesonly.com/recipe/${recipe}</loc>
+      <loc>https://therecipesonly.com/recipe/${encodeURI(recipe)}</loc>
       <lastmod>${new Date().toISOString()}</lastmod>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
@@ -89,4 +93,68 @@ export function generateSiteMap(recipes:string[]){
     `).join('')}
   </urlset>
   `
+}
+
+export async function pushStarRating(recipeName:string, rating:number, userId:string){
+  console.log('pushStarRating called', recipeName, rating, userId)
+  const recipeRef = doc(db, "recipes", recipeName)
+  // Check to see if this user has already rated this recipe
+
+  const dateString = new Date().toISOString()
+  
+  // if the ratings object exists, add the new rating to a collection of ratings
+  collection(db, "recipes", recipeName, "ratings");
+  await addDoc(collection(db, "ratings"), {})
+  
+  setDoc(recipeRef, {
+    ratings: {
+      [userId]: {created: dateString, rating: rating}
+    }
+  }, { merge: true });
+}
+
+export async function getStarRating(recipeName:string){
+  console.log('getStarRating called', recipeName)
+  const recipeRef = doc(db, "recipes", recipeName)
+  const recipeSnap = await getDoc(recipeRef);
+
+  if (recipeSnap.exists()) {
+    try{
+    let ratingsArr:Array<number> = []
+
+    Object.keys(recipeSnap.data().ratings).forEach((key:any, value:number) => {
+      ratingsArr.push(recipeSnap.data().ratings[key].rating)
+    })
+
+    // get the average of the ratings
+    const sum = ratingsArr.reduce((a,c) => a + c, 0);
+    const avg = sum / ratingsArr.length;
+
+    return (avg)
+  } catch (error) {
+    console.log('error getting rating', error)
+    return null
+  }
+  } else {
+    return null
+  }
+
+}
+
+
+
+
+// update the user rating of a recipe. Takes the userid and a ratings object
+export async function updateUserRecipeRating(userId:string, newRating:number, ratingsObject:Ratings){
+  // remove the current user rating from the ratingsObject
+  const ratingsArray = [1,2,3,4,5]
+  for (const rating of ratingsArray) {
+    if (ratingsObject[rating]) {
+      console.log(rating, ratingsObject[rating])
+      if (ratingsObject[rating][0].userId === userId) {
+        console.log('found user rating', ratingsObject[rating])
+        delete ratingsObject[rating]
+      }
+    }
+  }
 }

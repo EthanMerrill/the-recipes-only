@@ -1,4 +1,5 @@
 import { topRecipe } from "@/types/TopRecipe.interface";
+import Link from "next/link";
 
 export default function RecentRecipes(props:{topRecipes: topRecipe[]}){
     const topRecipes = props.topRecipes
@@ -9,11 +10,11 @@ export default function RecentRecipes(props:{topRecipes: topRecipe[]}){
     // })
     return (
     <div className = 'absolute bottom-12 right-12'>
-        <h1 className = 'text-txt-dark dark:txt-light text-lg font-serif font-normal'>Recently Generated Recipes: </h1>
+        <h1 className = 'text-txt-dark dark:text-txt-light text-lg font-serif font-normal'>Recently Generated Recipes: </h1>
         {topRecipes && topRecipes.map((recipe,i) => {
             return (
                 <div key = {i} className="text-right" >
-                    <a href={encodeURI(`recipe/${recipe.name}`)}><h1 className="text-txt-dark dark:txt-light my-2 hover:underline">{recipe.name}</h1></a>
+                    <Link href={encodeURI(`recipe/${recipe.name}`)}><h1 className="text-txt-dark dark:text-txt-light my-2 hover:underline">{recipe.name}</h1></Link>
                 </div>
             )
         })

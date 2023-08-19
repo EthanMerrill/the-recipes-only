@@ -12,9 +12,11 @@ interface AppContextProviderProps {
 export default function AppContextProvider( {children}:AppContextProviderProps) {
     const [recipeNames, setRecipeNames] = useState<string[]>([]);
     const [recipeName, setRecipeName] = useState<string>('');
+    const [starRating, setStarRating] = useState<number | undefined>();
+    const [userId, setUserId] = useState<string | undefined>()
 
     return (
-        <AppContext.Provider value={{recipeNames, setRecipeNames, recipeName, setRecipeName}}>
+        <AppContext.Provider value={{recipeNames, setRecipeNames, recipeName, setRecipeName, userId, setUserId, starRating, setStarRating}}>
            {children}
         </AppContext.Provider>
     );
