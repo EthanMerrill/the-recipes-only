@@ -1,5 +1,5 @@
 import { Rating } from 'react-simple-star-rating'
-import { useContext, useEffect, useState } from 'react'
+import { use, useContext, useEffect, useState } from 'react'
 import { pushStarRating, getStarRating } from '@/utils/utils'
 import { AppContext } from '@/context/state'
 
@@ -7,44 +7,42 @@ import { AppContext } from '@/context/state'
 export default function StarRating() {
 
   const [averageRating, setAverageRating] = useState<number | null>()
-  const [rating, setRating] = useState<number | undefined>()
-  const [hoverRating, setHoverRating] = useState<number | undefined>()
+  const [displayRating, setDisplayRating] = useState<number | undefined | null>()
   
   // read the recipe name from state
   const appContext = useContext(AppContext)
-  const { recipeName, userId, setRecipeName } = appContext
+  const { recipeName, userId, starRating } = appContext
 
+  // if userId is null, set it to a new random user id
   useEffect(() => {
-    if (rating && recipeName && userId) {
-      console.log(recipeName)
-      pushStarRating(recipeName, rating, userId)
+    if (!userId) {
+      appContext.setUserId(Math.random().toString(36).substring(7))
     }
-  }, [rating, recipeName, userId])
+  }, [appContext, userId])
 
-  // Catch Rating value
-  const handleRating = (rate: number) => {
-    setRating(rate)
-  }
-
-
+  // on initial start, set the rating to the average rating
   useEffect(() => {
-    if (recipeName) {
-      setRecipeName(recipeName)
+    if (recipeName){
       getStarRating(recipeName).then((rating) => {
-        appContext.setStarRating(rating)
         setAverageRating(rating)
-      }
-      )
+        setDisplayRating(rating)
+      })
     }
-    console.log("recipeName", recipeName, "rating", rating, "hoverRating", hoverRating, "averageRating", averageRating, Math.round(averageRating))
-  }, [appContext, recipeName, setRecipeName])
+  }, [appContext, averageRating, recipeName])
 
+  // if hovering, set the display rating to the hover rating
+  const onPointerMove = (value: number) => setDisplayRating(value)
 
-
-  // Optional callback functions
-  // const onPointerEnter = () => setHoverRating()
-  const onPointerLeave = () => rating ? (setHoverRating(rating), setRating(rating), pushStarRating(recipeName, rating, userId)) : averageRating? setHoverRating(averageRating): setHoverRating(undefined)
-  const onPointerMove = (value: number) => setHoverRating(value)
+  // if pointer leaves, set the display rating to the rating, push to firebase
+  const onPointerLeave = () => {starRating?setDisplayRating(starRating):averageRating?setDisplayRating(averageRating):setDisplayRating(null)}
+  
+  // if clicked, set the rating to the display rating, and push to firebase
+    const handleRating = (rate: number) => {
+      appContext.setStarRating(rate)
+      setDisplayRating(rate)
+      pushStarRating(recipeName, rate, userId)
+    }
+  
 
   const emojiMap: emojiMap = {
     1: '🤮',
@@ -59,8 +57,8 @@ export default function StarRating() {
   }
 
   return (
-    <div className='flex items-end my-5 mx-auto pb-md-4 justify-center w-[400px]'>
-      {(hoverRating || rating || averageRating) ? <p className='text-center text-xl mx-4 animate-fadeFast'>{!hoverRating && rating ? emojiMap[rating] : hoverRating ? hoverRating && emojiMap[hoverRating]:averageRating && emojiMap[Math.round(averageRating)]}</p> : <div className='h-[20px] w-[52px]'></div>}
+    <div className='flex items-end my-3 mx-auto pb-md-4 justify-center w-[400px]'>
+      {displayRating ? <p className='text-center text-xl mx-4 animate-fadeFast'>{displayRating ? emojiMap[Math.round(displayRating)]: ' '}</p> : <div className='h-[20px] w-[52px]'></div>}
       <div className=''>
         <Rating
           onClick={handleRating}
@@ -75,9 +73,7 @@ export default function StarRating() {
         /* Available Props */
         />
       </div>
-      {rating ? <p className='text-center text-lg mx-4 w-[32px]'>({(rating.toFixed(0))})</p>
-        : hoverRating ? <p className='text-center text-lg mx-4 w-[32px]'>({hoverRating})</p>
-          : averageRating ? <p className='text-center text-lg mx-4 w-[32px]'>({averageRating.toFixed(0)})</p>
+      {displayRating ? <p className='text-center text-lg mx-4 w-[32px]'>({(displayRating.toFixed(0))})</p>
             : <p className='text-center text-lg mx-4 w-[32px]'>(?)</p>}
     </div>
   )

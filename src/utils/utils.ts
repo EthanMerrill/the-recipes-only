@@ -1,7 +1,7 @@
 import { Recipe } from "@/types/Recipe";
 import { addDoc, collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
 import db from "@/pages/api/clientApp"
-import { Rating, Ratings } from "@/types/Ratings.interface";
+import { Ratings } from "@/types/Ratings.interface";
 
 
 export function capitalizeFirstLetter(text:string|string[]) {
@@ -96,40 +96,36 @@ export function generateSiteMap(recipes:string[]){
 }
 
 export async function pushStarRating(recipeName:string, rating:number, userId:string){
+  console.log('pushStarRating called', recipeName, rating, userId)
   const recipeRef = doc(db, "recipes", recipeName)
   // Check to see if this user has already rated this recipe
-  const recipeSnap = (await getDoc(recipeRef)).data();
-  // const ratingsObj:Ratings = recipeSnap?.ratings ? recipeSnap.ratings : {
-  //   1: [],
-  //   2: [],
-  //   3: [],
-  //   4: [],
-  //   5: []
-  // }
 
-  
   const dateString = new Date().toISOString()
   
-  console.log('ratings object',recipeSnap)
-  // if the ratings object exists, add the new rating to the array
-    
-    console.log('it didnt work', rating, recipeSnap, dateString)
+  // if the ratings object exists, add the new rating to a collection of ratings
+  collection(db, "recipes", recipeName, "ratings");
+  await addDoc(collection(db, "ratings"), {})
+  
   setDoc(recipeRef, {
     ratings: {
-      [rating]: [{created: dateString, userId: "test"}]
+      [userId]: {created: dateString, rating: rating}
     }
   }, { merge: true });
 }
 
 export async function getStarRating(recipeName:string){
+  console.log('getStarRating called', recipeName)
   const recipeRef = doc(db, "recipes", recipeName)
   const recipeSnap = await getDoc(recipeRef);
+
   if (recipeSnap.exists()) {
     try{
     let ratingsArr:Array<number> = []
-    Object.keys(recipeSnap.data().ratings).map((rating) => {
-      ratingsArr.push(parseInt(rating))
+
+    Object.keys(recipeSnap.data().ratings).forEach((key:any, value:number) => {
+      ratingsArr.push(recipeSnap.data().ratings[key].rating)
     })
+
     // get the average of the ratings
     const sum = ratingsArr.reduce((a,c) => a + c, 0);
     const avg = sum / ratingsArr.length;
@@ -147,20 +143,6 @@ export async function getStarRating(recipeName:string){
 
 
 
-
-// need a function to get the returning user's rating of a recipe
-// export async function getUserRecipeRating(userId:string, ratingsObject:Ratings){
-//   console.log('getUserRecipeRating called', userId, ratingsObject)
-//   // create array from 1-5
-//   const ratingsArray = [1,2,3,4,5]
-//   // loop through the ratings array
-//   for (const rating of ratingsArray) {
-//     // if the ratings object has a key of the rating
-//     if (ratingsObject[rating]) {
-//       console.log(`ratingsObject[${rating}] exists`, ratingsObject[rating])
-//     }
-//   }
-// }
 
 // update the user rating of a recipe. Takes the userid and a ratings object
 export async function updateUserRecipeRating(userId:string, newRating:number, ratingsObject:Ratings){

@@ -23,6 +23,9 @@ export default function Home(recipeDetails: HomeProps) {
 
   useEffect(() => {
     appContext.setRecipeNames(recipeDetails.recipeNames)
+    if(!appContext.userId){
+      appContext.setUserId(Math.random().toString(36).substring(7))
+    }
   }, [appContext, recipeDetails])
 
   // fade elements in on load

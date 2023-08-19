@@ -12,7 +12,7 @@ interface AppContextProviderProps {
 export default function AppContextProvider( {children}:AppContextProviderProps) {
     const [recipeNames, setRecipeNames] = useState<string[]>([]);
     const [recipeName, setRecipeName] = useState<string>('');
-    const [starRating, setStarRating] = useState<number>(0);
+    const [starRating, setStarRating] = useState<number | undefined>();
     const [userId, setUserId] = useState<string | undefined>()
 
     return (

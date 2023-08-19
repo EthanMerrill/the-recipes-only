@@ -14,8 +14,7 @@ export default function RecipePage(recipe: Recipe) {
     const { name, ingredients, instructions } = recipe
 
     const appContext = useContext(AppContext)
-    const {setRecipeName} = appContext
-
+    const {setRecipeName, starRating} = appContext
     useEffect(() => {
         setRecipeName(name)
     }, [name, setRecipeName])
@@ -36,6 +35,7 @@ export default function RecipePage(recipe: Recipe) {
             <main className='flex flex-col p-6 min-h-screen  bg-page-bg dark:bg-gray-dark'>
                 <div className='border-t border-gray-50 py-1'></div>
                 <h1 className="font-serif text-3xl sm:w-3/5 w-full mx-auto pt-5 text-center">{recipe.name}</h1>
+                <h3 className="font-sans text-sm sm:w-3/5 w-full mx-auto pt-5 text-center">{starRating?'My Rating':'Average Rating'}</h3>
                 <StarRating/>
                 <IngredientsInstructions ingredients={ingredients} instructions={instructions} loading={false} />
             </main>
@@ -53,11 +53,6 @@ export async function getStaticProps(context: any) {
         // stringify the timestamp
         const recipe = temp.map((recipe: any) => {
             recipe.created = recipe.created ? recipe.created?.toDate().toString() : null
-            // below is no longer neccessary, but does protect against datestrings formatted as D/T in recipe ratings. Not harmful to keep
-            recipe.ratings = recipe.ratings ? Object.keys(recipe.ratings).map((ratingNumber: any) => {
-                recipe.ratings[ratingNumber].created = recipe.ratings[ratingNumber].created ? recipe.ratings[ratingNumber].created?.toDate().toString() : null
-                return recipe.ratings[ratingNumber]
-            }) : null
             console.log('getStaticProps recipe', recipe)
             return recipe
         })
