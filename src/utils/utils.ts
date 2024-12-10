@@ -1,22 +1,21 @@
-import { Recipe } from "@/types/Recipe";
-import { addDoc, collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
-import db from "@/pages/api/clientApp"
-import { Ratings } from "@/types/Ratings.interface";
+import {Recipe} from "@/types/Recipe";
+import {addDoc, collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where} from "firebase/firestore";
+import db from "@/pages/api/clientApp";
+import {Ratings} from "@/types/Ratings.interface";
 
-
-export function capitalizeFirstLetter(text:string|string[]) {
-    if (Array.isArray(text)) {
-      return text.map(word => word.charAt(0).toUpperCase() + word.slice(1))[0]
-    }
-    return text
-      .toLowerCase() // lowercase all letters
-      .split(' ') // split the string into an array of words
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // capitalize the first letter of each word
-      .join(' ');
-    // capitalize th first letter of each word in the text
+export function capitalizeFirstLetter(text: string | string[]) {
+  if (Array.isArray(text)) {
+    return text.map((word) => word.charAt(0).toUpperCase() + word.slice(1))[0];
   }
+  return text
+    .toLowerCase() // lowercase all letters
+    .split(" ") // split the string into an array of words
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // capitalize the first letter of each word
+    .join(" ");
+  // capitalize th first letter of each word in the text
+}
 
-  export const testRecipe = `
+export const testRecipe = `
   Ingredients:
 
   - 2 large eggs
@@ -34,30 +33,32 @@ export function capitalizeFirstLetter(text:string|string[]) {
   4. Once the eggs are cooked, season with salt and pepper to taste.
   
   5. Serve and enjoy!
-`
-  
+`;
+
 // takes a string and returns it in the type of a recipe object
-export function recipeFormatter(recipeName:string, text:string){
-  
-    let newRecipe = {} as Recipe
-    newRecipe.ingredients = text.split(/ingredients|instructions/i)[1]?.match(/^[-|\d|\u00BC-\u00BE\u2150-\u215E].+$[\n]/gmi) ?? ['no ingredients given']  ?? []
-    newRecipe.instructions = text.split(/instructions/i)[1]?.match(/\d+\.+.+/gmi) ?? ['no instructions given'] ?? []
-    newRecipe.name = capitalizeFirstLetter(recipeName) ?? 'no name given'
-    console.log('recipeFormatter called', recipeName, text, newRecipe)
-    return newRecipe
+export function recipeFormatter(recipeName: string, text: string) {
+  let newRecipe = {} as Recipe;
+  newRecipe.ingredients = text.split(/ingredients|instructions/i)[1]?.match(/^[-|\d|\u00BC-\u00BE\u2150-\u215E].+$[\n]/gim) ?? ["no ingredients given"] ?? [];
+  newRecipe.instructions = text.split(/instructions/i)[1]?.match(/\d+\.+.+/gim) ?? ["no instructions given"] ?? [];
+  newRecipe.name = capitalizeFirstLetter(recipeName) ?? "no name given";
+  console.log("recipeFormatter called", recipeName, text, newRecipe);
+  return newRecipe;
 }
 
-export function structuredRecipeBuilder(recipe:Recipe){
+export function structuredRecipeBuilder(recipe: Recipe) {
+  // format instructions
+  let instructions =
+    recipe.instructions &&
+    JSON.stringify(
+      recipe.instructions.map((instruction, index) => {
+        return {
+          "@type": "HowToStep",
+          text: instruction,
+        };
+      })
+    );
 
-    // format instructions
-    let instructions = recipe.instructions && JSON.stringify(recipe.instructions.map((instruction, index) => {
-      return {
-        "@type": "HowToStep",
-        "text": instruction,
-      }
-    }))
-
-    let structuredRecipe = `
+  let structuredRecipe = `
     {
       "@context": "https://schema.org/",
       "@type": "Recipe",
@@ -70,11 +71,11 @@ export function structuredRecipeBuilder(recipe:Recipe){
       "description": "A recipe for ${recipe.name}",
       "recipeIngredient": ${recipe.ingredients && JSON.stringify(recipe.ingredients)},
       "recipeInstructions": ${instructions}
-    }`
-    return structuredRecipe
+    }`;
+  return structuredRecipe;
 }
 
-export function generateSiteMap(recipes:string[]){
+export function generateSiteMap(recipes: string[]) {
   return `
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
@@ -83,77 +84,81 @@ export function generateSiteMap(recipes:string[]){
       <changefreq>daily</changefreq>
       <priority>1.0</priority>
     </url>
-    ${recipes.map(recipe => `
+    ${recipes
+      .map(
+        (recipe) => `
     <url>
-      <loc>https://therecipesonly.com/recipe/${encodeURI(recipe)}</loc>
+      <loc>https://therecipesonly.com/recipe/${recipe}</loc>
       <lastmod>${new Date().toISOString()}</lastmod>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
     </url>
-    `).join('')}
+    `
+      )
+      .join("")}
   </urlset>
-  `
+  `;
 }
 
-export async function pushStarRating(recipeName:string, rating:number, userId:string){
-  console.log('pushStarRating called', recipeName, rating, userId)
-  const recipeRef = doc(db, "recipes", recipeName)
+export async function pushStarRating(recipeName: string, rating: number, userId: string) {
+  console.log("pushStarRating called", recipeName, rating, userId);
+  const recipeRef = doc(db, "recipes", recipeName);
   // Check to see if this user has already rated this recipe
 
-  const dateString = new Date().toISOString()
-  
+  const dateString = new Date().toISOString();
+
   // if the ratings object exists, add the new rating to a collection of ratings
   collection(db, "recipes", recipeName, "ratings");
-  await addDoc(collection(db, "ratings"), {})
-  
-  setDoc(recipeRef, {
-    ratings: {
-      [userId]: {created: dateString, rating: rating}
-    }
-  }, { merge: true });
+  await addDoc(collection(db, "ratings"), {});
+
+  setDoc(
+    recipeRef,
+    {
+      ratings: {
+        [userId]: {created: dateString, rating: rating},
+      },
+    },
+    {merge: true}
+  );
 }
 
-export async function getStarRating(recipeName:string){
-  console.log('getStarRating called', recipeName)
-  const recipeRef = doc(db, "recipes", recipeName)
+export async function getStarRating(recipeName: string) {
+  console.log("getStarRating called", recipeName);
+  const recipeRef = doc(db, "recipes", recipeName);
   const recipeSnap = await getDoc(recipeRef);
 
   if (recipeSnap.exists()) {
-    try{
-    let ratingsArr:Array<number> = []
+    try {
+      let ratingsArr: Array<number> = [];
 
-    Object.keys(recipeSnap.data().ratings).forEach((key:any, value:number) => {
-      ratingsArr.push(recipeSnap.data().ratings[key].rating)
-    })
+      Object.keys(recipeSnap.data().ratings).forEach((key: any, value: number) => {
+        ratingsArr.push(recipeSnap.data().ratings[key].rating);
+      });
 
-    // get the average of the ratings
-    const sum = ratingsArr.reduce((a,c) => a + c, 0);
-    const avg = sum / ratingsArr.length;
+      // get the average of the ratings
+      const sum = ratingsArr.reduce((a, c) => a + c, 0);
+      const avg = sum / ratingsArr.length;
 
-    return (avg)
-  } catch (error) {
-    console.log('error getting rating', error)
-    return null
-  }
+      return avg;
+    } catch (error) {
+      console.log("error getting rating", error);
+      return null;
+    }
   } else {
-    return null
+    return null;
   }
-
 }
 
-
-
-
 // update the user rating of a recipe. Takes the userid and a ratings object
-export async function updateUserRecipeRating(userId:string, newRating:number, ratingsObject:Ratings){
+export async function updateUserRecipeRating(userId: string, newRating: number, ratingsObject: Ratings) {
   // remove the current user rating from the ratingsObject
-  const ratingsArray = [1,2,3,4,5]
+  const ratingsArray = [1, 2, 3, 4, 5];
   for (const rating of ratingsArray) {
     if (ratingsObject[rating]) {
-      console.log(rating, ratingsObject[rating])
+      console.log(rating, ratingsObject[rating]);
       if (ratingsObject[rating][0].userId === userId) {
-        console.log('found user rating', ratingsObject[rating])
-        delete ratingsObject[rating]
+        console.log("found user rating", ratingsObject[rating]);
+        delete ratingsObject[rating];
       }
     }
   }
