@@ -98,6 +98,9 @@ export default function NewRecipe() {
                 <Suspense fallback={<div>Loading...</div>}>
                     <IngredientsInstructions loading={isLoading || isFetching} ingredients={recipe.ingredients} instructions={recipe.instructions} />
                 </Suspense>
+                <div className='mt-8'>
+                <SignatureFooter />
+                </div>
             </main>
         </>
     )

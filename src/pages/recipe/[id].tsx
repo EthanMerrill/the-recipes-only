@@ -8,7 +8,7 @@ import StarRating from '@/components/StarRating';
 import { structuredRecipeBuilder } from '@/utils/utils';
 import { use, useContext, useEffect } from 'react';
 import { AppContext } from '@/context/state';
-
+import { SignatureFooter } from 'ethan-common-components';
 
 export default function RecipePage(recipe: Recipe) {
     const { name, ingredients, instructions } = recipe
@@ -38,6 +38,9 @@ export default function RecipePage(recipe: Recipe) {
                 <h3 className="font-sans text-sm sm:w-3/5 w-full mx-auto pt-5 text-center">{starRating?'My Rating':'Average Rating'}</h3>
                 <StarRating/>
                 <IngredientsInstructions ingredients={ingredients} instructions={instructions} loading={false} />
+                <div className='mt-8'>
+                <SignatureFooter />
+                </div>
             </main>
         </>
     )
