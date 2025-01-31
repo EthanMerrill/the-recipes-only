@@ -39,7 +39,7 @@ export default function RecipePage(recipe: Recipe) {
                 <StarRating/>
                 <IngredientsInstructions ingredients={ingredients} instructions={instructions} loading={false} />
                 <div className='mt-8'>
-                <SignatureFooter />
+                <SignatureFooter fontColor={""} backgroundColor={""} />
                 </div>
             </main>
         </>

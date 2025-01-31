@@ -11,6 +11,7 @@ import { AppContext } from "@/context/state";
 import IngredientsInstructions from "@/components/IngredientsInstructions";
 import { useQuery } from "@tanstack/react-query"
 import { serverTimestamp } from "firebase/firestore"
+import { SignatureFooter } from "ethan-common-components";
 
 // const fetcher = (recipe:any) => simpleRecipeApi(recipe).then(({data}) => data);
 
@@ -99,7 +100,7 @@ export default function NewRecipe() {
                     <IngredientsInstructions loading={isLoading || isFetching} ingredients={recipe.ingredients} instructions={recipe.instructions} />
                 </Suspense>
                 <div className='mt-8'>
-                <SignatureFooter />
+                <SignatureFooter fontColor={""} backgroundColor={""}/>
                 </div>
             </main>
         </>

@@ -73,7 +73,7 @@ export default function Home(recipeDetails: HomeProps) {
         </Script>
         <Analytics />
         <div className='mt-8'>
-                <SignatureFooter />
+                <SignatureFooter backgroundColor={""} fontColor={""}/>
                 </div>
       </main>
     </>
