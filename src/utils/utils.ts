@@ -49,20 +49,20 @@ export function structuredRecipeBuilder(recipe: Recipe) {
   return JSON.stringify({
     "@context": "https://schema.org/",
     "@type": "Recipe",
-    name: recipe.name,
-    keywords: recipe.name?.split(" "),
+    name: recipe.name ?? "No name provided",
+    keywords: recipe.name?.split(" ") ?? [],
     image: "https://firebasestorage.googleapis.com/v0/b/the-recipes-only.appspot.com/o/DALL%C2%B7E%202023-04-09%2018.59.16%20-%20recipe%20image%20coming%20soon.png?alt=media&token=e97cc303-fc7b-4a28-b2b0-c5bf9595beea",
     author: {
       "@type": "Person",
       name: "The Recipes Only",
     },
-    datePublished: recipe.created,
-    description: `A recipe for ${recipe.name}`,
-    recipeIngredient: recipe.ingredients,
-    recipeInstructions: recipe.instructions.map((instruction) => ({
+    datePublished: recipe.created ?? "No date provided",
+    description: `A recipe for ${recipe.name ?? "No name provided"}`,
+    recipeIngredient: recipe.ingredients ?? ["No ingredients provided"],
+    recipeInstructions: recipe.instructions?.map((instruction) => ({
       "@type": "HowToStep",
       text: instruction,
-    })),
+    })) ?? [{"@type": "HowToStep", text: "No instructions provided"}],
   });
 }
 
