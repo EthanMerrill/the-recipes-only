@@ -21,7 +21,7 @@
     "clsx": "^1.2.1",
     "eslint": "8.32.0",
     "eslint-config-next": "13.1.4",
-    "ethan-common-components": "^0.1.0",
+    "ethan-common-components": "^0.1.1",
     "firebase": "^9.15.0",
     "next": "13.1.4",
     "react": "18.2.0",

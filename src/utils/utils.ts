@@ -46,33 +46,24 @@ export function recipeFormatter(recipeName: string, text: string) {
 }
 
 export function structuredRecipeBuilder(recipe: Recipe) {
-  // format instructions
-  let instructions =
-    recipe.instructions &&
-    JSON.stringify(
-      recipe.instructions.map((instruction, index) => {
-        return {
-          "@type": "HowToStep",
-          text: instruction,
-        };
-      })
-    );
-
-  let structuredRecipe = `
-    {
-      "@context": "https://schema.org/",
-      "@type": "Recipe",
-      "name": "${recipe.name}",
-      "Keywords": ${JSON.stringify(recipe.name?.split(" "))},
-      "image": "https://firebasestorage.googleapis.com/v0/b/the-recipes-only.appspot.com/o/DALL%C2%B7E%202023-04-09%2018.59.16%20-%20recipe%20image%20coming%20soon.png?alt=media&token=e97cc303-fc7b-4a28-b2b0-c5bf9595beea",
-      "author": {"@type": "Person",
-                "name": "The Recipes Only"},
-      "datePublished": "${recipe.created}",
-      "description": "A recipe for ${recipe.name}",
-      "recipeIngredient": ${recipe.ingredients && JSON.stringify(recipe.ingredients)},
-      "recipeInstructions": ${instructions}
-    }`;
-  return structuredRecipe;
+  return JSON.stringify({
+    "@context": "https://schema.org/",
+    "@type": "Recipe",
+    name: recipe.name,
+    keywords: recipe.name?.split(" "),
+    image: "https://firebasestorage.googleapis.com/v0/b/the-recipes-only.appspot.com/o/DALL%C2%B7E%202023-04-09%2018.59.16%20-%20recipe%20image%20coming%20soon.png?alt=media&token=e97cc303-fc7b-4a28-b2b0-c5bf9595beea",
+    author: {
+      "@type": "Person",
+      name: "The Recipes Only",
+    },
+    datePublished: recipe.created,
+    description: `A recipe for ${recipe.name}`,
+    recipeIngredient: recipe.ingredients,
+    recipeInstructions: recipe.instructions.map((instruction) => ({
+      "@type": "HowToStep",
+      text: instruction,
+    })),
+  });
 }
 
 export function generateSiteMap(recipes: string[]) {
