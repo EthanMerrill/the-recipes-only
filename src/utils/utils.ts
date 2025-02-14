@@ -79,7 +79,7 @@ export function generateSiteMap(recipes: string[]) {
       .map(
         (recipe) => `
     <url>
-      <loc>https://therecipesonly.com/recipe/${recipe}</loc>
+      <loc>https://wwww.therecipesonly.com/recipe/${recipe}</loc>
       <lastmod>${new Date().toISOString()}</lastmod>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
