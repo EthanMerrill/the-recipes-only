@@ -38,8 +38,8 @@ export const testRecipe = `
 // takes a string and returns it in the type of a recipe object
 export function recipeFormatter(recipeName: string, text: string) {
   let newRecipe = {} as Recipe;
-  newRecipe.ingredients = text.split(/ingredients|instructions/i)[1]?.match(/^[-|\d|\u00BC-\u00BE\u2150-\u215E].+$[\n]/gim) ?? ["no ingredients given"] ?? [];
-  newRecipe.instructions = text.split(/instructions/i)[1]?.match(/\d+\.+.+/gim) ?? ["no instructions given"] ?? [];
+  newRecipe.ingredients = text.split(/ingredients|instructions/i)[1]?.match(/^[-|\d|\u00BC-\u00BE\u2150-\u215E].+$[\n]/gim) ?? ["no ingredients given"];
+  newRecipe.instructions = text.split(/instructions/i)[1]?.match(/\d+\.+.+/gim) ?? ["no instructions given"];
   newRecipe.name = capitalizeFirstLetter(recipeName) ?? "no name given";
   console.log("recipeFormatter called", recipeName, text, newRecipe);
   return newRecipe;
@@ -70,7 +70,7 @@ export function generateSiteMap(recipes: string[]) {
   return `
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-      <loc>https://therecipesonly.com/</loc>
+      <loc>https://www.therecipesonly.com/</loc>
       <lastmod>${new Date().toISOString()}</lastmod>
       <changefreq>daily</changefreq>
       <priority>1.0</priority>
@@ -79,7 +79,7 @@ export function generateSiteMap(recipes: string[]) {
       .map(
         (recipe) => `
     <url>
-      <loc>https://wwww.therecipesonly.com/recipe/${recipe}</loc>
+      <loc>https://www.therecipesonly.com/recipe/${recipe}</loc>
       <lastmod>${new Date().toISOString()}</lastmod>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
