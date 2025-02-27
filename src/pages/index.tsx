@@ -56,7 +56,7 @@ export default function Home(recipeDetails: HomeProps) {
           </div>
           <RecentRecipes topRecipes={recipeDetails.recentRecipes} />
         </div>
-          
+
         {/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-110EPPVXQX"
@@ -72,9 +72,9 @@ export default function Home(recipeDetails: HomeProps) {
         `}
         </Script>
         <Analytics />
-        <div className='mt-8'>
-                <SignatureFooter backgroundColor={""} fontColor={""}/>
-                </div>
+        <div className='mt-8 absolute bottom-0 w-full'>
+          <SignatureFooter backgroundColor={""} fontColor={""} />
+        </div>
       </main>
     </>
   )
