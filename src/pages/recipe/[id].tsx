@@ -14,11 +14,11 @@ export default function RecipePage(recipe: Recipe) {
     const { name, ingredients, instructions } = recipe
 
     const appContext = useContext(AppContext)
-    const {setRecipeName, starRating} = appContext
+    const { setRecipeName, starRating } = appContext
     useEffect(() => {
         setRecipeName(name)
     }, [name, setRecipeName])
-    
+
 
     return (
         <>
@@ -28,9 +28,9 @@ export default function RecipePage(recipe: Recipe) {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
                 <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: structuredRecipeBuilder(recipe) }}
-        />
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: structuredRecipeBuilder(recipe) }}
+                />
                 <script type="application/ld+json">
                     {structuredRecipeBuilder(recipe)}
                 </script>
@@ -39,11 +39,11 @@ export default function RecipePage(recipe: Recipe) {
             <main className='flex flex-col p-6 min-h-screen  bg-page-bg dark:bg-gray-dark'>
                 <div className='border-t border-gray-50 py-1'></div>
                 <h1 className="font-serif text-3xl sm:w-3/5 w-full mx-auto pt-5 text-center">{recipe.name}</h1>
-                <h3 className="font-sans text-sm sm:w-3/5 w-full mx-auto pt-5 text-center">{starRating?'My Rating':'Average Rating'}</h3>
-                <StarRating/>
+                <h3 className="font-sans text-sm sm:w-3/5 w-full mx-auto pt-5 text-center">{starRating ? 'My Rating' : 'Average Rating'}</h3>
+                <StarRating />
                 <IngredientsInstructions ingredients={ingredients} instructions={instructions} loading={false} />
                 <div className='mt-8'>
-                <SignatureFooter fontColor={""} backgroundColor={""} />
+                    <SignatureFooter fontColor={""} backgroundColor={""} />
                 </div>
             </main>
         </>

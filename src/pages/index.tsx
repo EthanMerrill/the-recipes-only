@@ -11,6 +11,7 @@ import RecentRecipes from '@/components/RecentRecipes';
 import { topRecipe } from '@/types/TopRecipe.interface';
 import { Analytics } from '@vercel/analytics/react';
 import { SignatureFooter } from 'ethan-common-components';
+import Link from 'next/link';
 
 interface HomeProps {
   recipeNames: string[]
@@ -57,6 +58,13 @@ export default function Home(recipeDetails: HomeProps) {
           <RecentRecipes topRecipes={recipeDetails.recentRecipes} />
         </div>
 
+        {/* Link to All Recipes page */}
+        <div className='absolute bottom-12 left-12'>
+          <Link href="/recipes" className="text-txt-dark dark:text-txt-light hover:underline font-serif">
+            Browse All Recipes
+          </Link>
+
+        </div>
         {/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-110EPPVXQX"
@@ -72,10 +80,10 @@ export default function Home(recipeDetails: HomeProps) {
         `}
         </Script>
         <Analytics />
-        <div className='mt-8 absolute bottom-0 w-full'>
-          <SignatureFooter backgroundColor={""} fontColor={""} />
-        </div>
       </main>
+      <div className='mt-8 absolute bottom-0 w-full'>
+        <SignatureFooter backgroundColor={""} fontColor={""} />
+      </div>
     </>
   )
 }
