@@ -41,10 +41,22 @@ export default function Home(recipeDetails: HomeProps) {
   return (
     <>
       <Head>
-        <title>The Recipes Only</title>
-        <meta name="description" content="Just Recipes" />
+        <title>The Recipes Only - Just Recipes</title>
+        <meta name="description" content="Just Recipes: a simple app for discovering and saving your favorite recipes. No ads, long stories, or distractions. " />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <meta name="keywords" content="recipes, cooking, food, cuisine, recipe finder" />
+        <meta property="og:title" content="The Recipes Only" />
+        <meta property="og:description" content="Search for any recipe and get just the recipe - nothing more" />
+        <meta property="og:type" content="website" />
+        {/* <meta property="og:url" content="https://the-recipes-only.com" /> */}
+        {/* <meta property="og:image" content="https://the-recipes-only.com/og-image.jpg" /> */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="The Recipes Only" />
+        <meta name="twitter:description" content="Just Recipes: a simple app for discovering and saving your favorite recipes." />
+        {/* <meta name="twitter:image" content="https://the-recipes-only.com/twitter-card.jpg" /> */}
+        {/* <link rel="icon" href="/favicon.ico" /> */}
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/site.webmanifest" />
       </Head>
       <main className='flex flex-col p-6 min-h-screen bg-page-bg dark:bg-gray-dark '>
 
