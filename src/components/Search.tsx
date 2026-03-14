@@ -1,67 +1,66 @@
-import { AppContext } from '@/context/state';
-import { useRouter } from 'next/router.js'
-import { useContext, useEffect, useState } from 'react'
-import Turnstone from 'turnstone'
-import turnstoneStyles from '../styles/turnstoneStyles.js'
+import {AppContext} from "@/context/state";
+import {useRouter} from "next/router.js";
+import {useContext, useEffect, useState} from "react";
+import dynamic from "next/dynamic";
+import type {ComponentType} from "react";
+import turnstoneStyles from "../styles/turnstoneStyles.js";
+
+const Turnstone = dynamic(() => import("turnstone"), {ssr: false}) as ComponentType<any>;
 
 interface RecipeNames {
-    recipeNames: string[]
-    text?: string
+	recipeNames: string[];
+	text?: string;
 }
 
-
 export default function Search(props: RecipeNames) {
-    const { recipeNames, text } = props
-    const router = useRouter()
+	const {recipeNames, text} = props;
+	const router = useRouter();
 
+	// check if search term is in the recipeNames array
+	const isRecipe = (searchTerm: string) => {
+		console.log("isRecipe", searchTerm, recipeNames);
+		return recipeNames.includes(searchTerm);
+	};
 
-    // check if search term is in the recipeNames array
-    const isRecipe = (searchTerm: string) => {
-        console.log('isRecipe', searchTerm, recipeNames)
-        return recipeNames.includes(searchTerm)
-    }
+	const searchFunc = (e: string) => {
+		// appContext.setRecipeName(e)
+		if (isRecipe(e)) {
+			router.push(`/recipe/${e}`);
+		} else {
+			router.push({
+				pathname: `/recipe/NewRecipe`,
+				query: {searchTerm: e},
+			});
+		}
+	};
 
-    const searchFunc = (e: string) => {
-        // appContext.setRecipeName(e)
-        if (isRecipe(e)) {
-            router.push(`/recipe/${e}`)
-        } else {
-            router.push({
-                pathname: `/recipe/NewRecipe`,
-                query: { searchTerm: e }
-            })
-        }
-    }
+	const appContext = useContext(AppContext);
+	const {recipeName} = appContext;
+	appContext.setRecipeName(recipeName);
 
-    const appContext = useContext(AppContext)
-    const { recipeName } = appContext
-    appContext.setRecipeName(recipeName)
-
-    return (
-        <Turnstone
-            id={'search'}
-            styles={turnstoneStyles}
-            maxItems= {5}
-            listbox={{ name:"test",data: recipeNames, searchType: 'contains', }}
-            onClick={(e: string) => {
-                searchFunc(e)
-                console.log(e)
-            }}
-            onSelect={(e: string) => {
-                if(e){
-                    searchFunc(e)
-                }
-            }}
-            enterKeyHint={'enter'}
-            matchText={true}
-            placeholder={'Search for a recipe'}
-            text={recipeName}
-            // typeahead={true}
-            onEnter={(e: string) => {
-                searchFunc(e)
-            }}
-            noItemsMessage="Press enter to generate this recipe!"
-        >
-        </Turnstone>
-    )
+	return (
+		<Turnstone
+			id={"search"}
+			styles={turnstoneStyles}
+			maxItems={5}
+			listbox={{name: "test", data: recipeNames, searchType: "contains"}}
+			onClick={(e: string) => {
+				searchFunc(e);
+				console.log(e);
+			}}
+			onSelect={(e: string) => {
+				if (e) {
+					searchFunc(e);
+				}
+			}}
+			enterKeyHint={"enter"}
+			matchText={true}
+			placeholder={"Search for a recipe"}
+			text={recipeName}
+			// typeahead={true}
+			onEnter={(e: string) => {
+				searchFunc(e);
+			}}
+			noItemsMessage="Press enter to generate this recipe!"></Turnstone>
+	);
 }

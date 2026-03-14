@@ -49,6 +49,9 @@ export function structuredRecipeBuilder(recipe: Recipe) {
   return JSON.stringify({
     "@context": "https://schema.org/",
     "@type": "Recipe",
+    "@id": `https://www.therecipesonly.com/recipe/${recipe.name}`,
+    url: `https://www.therecipesonly.com/recipe/${recipe.name}`,
+    mainEntityOfPage: `https://www.therecipesonly.com/recipe/${recipe.name}`,
     name: recipe.name ?? "No name provided",
     keywords: recipe.name?.split(" ") ?? [],
     image: "https://firebasestorage.googleapis.com/v0/b/the-recipes-only.appspot.com/o/DALL%C2%B7E%202023-04-09%2018.59.16%20-%20recipe%20image%20coming%20soon.png?alt=media&token=e97cc303-fc7b-4a28-b2b0-c5bf9595beea",
@@ -70,7 +73,7 @@ export function generateSiteMap(recipes: string[]) {
   return `
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-      <loc>https://www.therecipesonly.com/</loc>
+      <loc>https://www.therecipesonly.com</loc>
       <lastmod>${new Date().toISOString()}</lastmod>
       <changefreq>daily</changefreq>
       <priority>1.0</priority>
