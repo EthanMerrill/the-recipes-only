@@ -41,17 +41,21 @@ export default function RecipePage(recipe: Recipe) {
 				<script type="application/ld+json" dangerouslySetInnerHTML={{__html: structuredRecipeBuilder(recipe)}} />
 				<script type="application/ld+json">{structuredRecipeBuilder(recipe)}</script>
 			</Head>
-			<Header />
-			<main className="flex flex-col p-6 min-h-screen  bg-page-bg dark:bg-gray-dark">
-				<div className="border-t border-gray-50 py-1"></div>
-				<h1 className="font-serif text-3xl sm:w-3/5 w-full mx-auto pt-5 text-center">{recipe.name}</h1>
-				<h3 className="font-sans text-sm sm:w-3/5 w-full mx-auto pt-5 text-center">{starRating ? "My Rating" : "Average Rating"}</h3>
-				<StarRating />
-				<IngredientsInstructions ingredients={ingredients} instructions={instructions} loading={false} />
-				<div className="mt-8">
-					<SignatureFooter fontColor={""} backgroundColor={""} />
-				</div>
-			</main>
+			<div className="min-h-screen flex flex-col bg-page-bg dark:bg-gray-dark">
+				<Header />
+				<main className="flex flex-1 flex-col px-4 py-6 sm:px-6">
+					<div className="border-t border-gray-50 py-1"></div>
+					<div className="max-w-2xl w-full mx-auto">
+						<h1 className="font-serif text-3xl pt-5">{recipe.name}</h1>
+						<p className="font-sans text-sm pt-4 text-gray-500 dark:text-slate-400">{starRating ? "My Rating" : "Average Rating"}</p>
+						<StarRating />
+						<IngredientsInstructions ingredients={ingredients} instructions={instructions} loading={false} />
+					</div>
+					<div className="mt-auto pt-8">
+						<SignatureFooter fontColor={""} backgroundColor={""} />
+					</div>
+				</main>
+			</div>
 		</>
 	);
 }
